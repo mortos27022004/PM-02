@@ -78,7 +78,6 @@
           <i class="bi bi-code-square me-2"></i>CODELEARN
         </a>
         <div class="ms-auto d-flex gap-2">
-          <a class="btn btn-outline-light btn" href="#">Đăng nhập</a>
           <a class="btn btn-primary btn" href="#">Đăng ký</a>
         </div>
       </div>
@@ -117,16 +116,16 @@
           <div class="col-lg-5">
             <div class="card login-card p-3 p-md-4 bg-white">
               <div class="card-body">
-                <h5 class="fw-semibold mb-3">Học lập trình cùng với hàng triệu người với CodeLearn</h5>
+                <h5 class="fw-semibold mb-3 text-center">Học lập trình cùng với CodeLearn</h5>
                 <form>
                   <div class="mb-3">
-                    <label class="form-label small">Tên tài khoản</label>
-                    <input type="text" class="form-control" placeholder="Tên tài khoản*" required>
+                    <label class="form-label small">Tên tài khoản: </label>
+                    <input type="text" class="form-control" placeholder="Tên tài khoản*">
                   </div>
                   <div class="mb-2">
-                    <label class="form-label small">Mật khẩu</label>
+                    <label class="form-label small">Mật khẩu: </label>
                     <div class="input-group">
-                      <input type="password" class="form-control" placeholder="Mật khẩu*" required id="password">
+                      <input type="password" class="form-control" placeholder="Mật khẩu*"  id="password">
                       <button class="btn btn-outline-secondary" type="button" id="togglePw" aria-label="Hiện/ẩn mật khẩu"><i class="bi bi-eye"></i></button>
                     </div>
                   </div>
@@ -134,7 +133,7 @@
                     <a href="#" class="small">Quên mật khẩu?</a>
                   </div>
                   <div class="d-grid">
-                    <button class="btn btn-primary" type="submit">Đăng nhập</button>
+                    <button class="btn btn-primary" type="submit" id="btn-login">Đăng nhập</button>
                   </div>
                 </form>
 
@@ -175,6 +174,13 @@
         this.querySelector('i')?.classList.toggle('bi-eye');
         this.querySelector('i')?.classList.toggle('bi-eye-slash');
       });
+
+
+        const form = document.querySelector('.login-card form');
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();                 // chặn submit thật
+            window.location.href = 'learner_home.html'; // chuyển trang
+        });
     </script>
   </body>
 </html>
