@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bài tập | Thảo luận & Sandbox</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+  :root{
+    --nav-h: 56px;         /* Top app bar height */
+    --subbar-h: 60px;      /* Sub bar height */
+    --rail-w: 56px;        /* Left icon rail width */
+    --brand:#0f2742;       /* xanh than */
+    --brand-2:#0b1f34;     /* xanh than đậm hơn */
+    --accent:#4263eb;      /* xanh nhấn nút */
+    --comment-bg:#eef3ff;  /* nền comment */
+    --editor-bg:#1e1e1e;   /* editor dark */
+  }
+  body { background: #0b2238; }
+
+  /* Top App Bar */
+  .appbar{
+    height: var(--nav-h);
+    background: #0c2440;
+  }
+  .appbar .navbar-brand{ font-weight:700; letter-spacing:.3px; }
+
+  /* Sub App Bar (problem controls) */
+  .subbar{
+    height: var(--subbar-h);
+    background: var(--brand);
+    color: #fff;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+  }
+  .pill-btn .btn{ border-radius: 14px; padding: .2rem .6rem; }
+
+  /* Main two-pane layout */
+  .main{
+    height: calc(100vh - var(--nav-h) - var(--subbar-h));
+  }
+  .rail{
+    width: var(--rail-w);
+    background: #0e2742;
+    border-right: 1px solid rgba(255,255,255,.06);
+  }
+  .rail .nav-link{
+    color: #b8c2d6;
+    width: 100%; height: 48px;
+    display:flex; align-items:center; justify-content:center;
+    border-radius: 8px;
+  }
+  .rail .nav-link.active, .rail .nav-link:hover{ background:#0b1f34; color:#fff; }
+
+  /* Comments */
+  .comments-wrap{ background:#fff; }
+  .comments-scroll{ height: 100%; overflow:auto; padding: 16px; }
+  .comment-box{
+    background: var(--comment-bg);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .comment-reply{ margin-left: 56px; }
+  .avatar{
+    width: 40px; height: 40px; border-radius: 50%;
+    background:#e9ecef; display:inline-flex; align-items:center; justify-content:center;
+    font-weight:700; color:#5a6b7f;
+    position:relative;
+  }
+  .badge-crown{
+    position:absolute; right:-4px; top:-6px;
+    font-size: 0.9rem; color:#d39e00; background:#fff; border-radius:50%;
+    width:18px; height:18px; display:flex; align-items:center; justify-content:center;
+  }
+  .comment-actions a{ color:#6c757d; text-decoration:none; margin-right:14px; font-size:.9rem; }
+  .comment-actions a:hover{ text-decoration:underline; }
+  .vote{ color:#6c757d; margin-right: 12px; }
+
+  /* Editor side */
+  .editor-wrap{ background:#0a1f36; }
+  .editor-toolbar{
+    background: var(--brand-2);
+    color:#d7e3ff;
+    padding: 8px 10px;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+  .editor{
+    background: var(--editor-bg);
+    color:#dcdcdc;
+    min-height: 320px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: .95rem;
+    padding: 12px 16px;
+    border-radius: 10px;
+  }
+  .editor pre{ margin:0; color: #dcdcdc; }
+  .test-panel{
+    background: #131e31;
+    color:#e7ecff;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .test-panel .panel-h{
+    background:#0f2035;
+    padding:10px 14px;
+    font-weight:600;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+  .test-list .list-group-item{
+    background:#16253d; color:#dbe6ff; border: 0; border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+  .locked{ opacity:.6; }
+  .table-dark-blue{
+    --bs-table-bg: #0f2035;
+    --bs-table-striped-bg:#0e1b2d;
+    --bs-table-hover-bg:#132542;
+    color:#dbe6ff;
+  }
+
+  /* Utilities */
+  .btn-primary{ background: var(--accent); border-color: var(--accent); }
+  .btn-primary:focus,.btn-primary:hover{ background:#3551d8; border-color:#3551d8; }
+  .rounded-14{ border-radius:14px; }
+</style>
+</head>
+<body>
+
+<!-- Top App Bar -->
+<nav class="navbar navbar-expand appbar navbar-dark px-3">
+  <a class="navbar-brand" href="#"><i class="bi bi-code-square me-2"></i>CODELEARN</a>
+  <ul class="navbar-nav mx-auto">
+    <li class="nav-item"><a class="nav-link text-white-50 px-3" href="#">Học tập</a></li>
+    <li class="nav-item"><a class="nav-link text-white-50 px-3" href="#">Luyện tập</a></li>
+    <li class="nav-item"><a class="nav-link text-white-50 px-3" href="#">Thi đấu</a></li>
+    <li class="nav-item"><a class="nav-link text-white-50 px-3" href="#">Sự kiện</a></li>
+    <li class="nav-item"><a class="nav-link text-white-50 px-3" href="#">Xếp hạng</a></li>
+    <li class="nav-item"><a class="nav-link text-white-50 px-3" href="#">Người đóng góp</a></li>
+    <li class="nav-item"><a class="nav-link text-white-50 px-3" href="#">Chia sẻ</a></li>
+    <li class="nav-item"><a class="nav-link text-white-50 px-3" href="#">Phòng trưng bày</a></li>
+  </ul>
+  <div class="d-flex align-items-center gap-3">
+    <a class="text-white-50" href="#"><i class="bi bi-cart"></i></a>
+    <a class="text-white-50" href="#"><i class="bi bi-bell"></i></a>
+    <img src="https://flagcdn.com/w20/vn.png" alt="VN" class="rounded-circle" width="20" height="20">
+    <div class="bg-white rounded-circle" style="width:28px;height:28px;"></div>
+  </div>
+</nav>
+
+<!-- Sub App Bar -->
+<div class="subbar d-flex align-items-center px-3">
+  <div class="me-auto text-white fw-semibold">sumOfVector</div>
+
+  <div class="pill-btn me-3 d-none d-md-block">
+    <div class="btn-group">
+      <button class="btn btn-outline-light btn-sm">1</button>
+      <button class="btn btn-light btn-sm fw-bold text-primary">2</button>
+      <button class="btn btn-outline-light btn-sm">3</button>
+      <button class="btn btn-outline-light btn-sm">4</button>
+      <button class="btn btn-outline-light btn-sm">5</button>
+      <button class="btn btn-outline-light btn-sm">6</button>
+      <button class="btn btn-outline-light btn-sm">7</button>
+      <button class="btn btn-outline-light btn-sm">8</button>
+      <button class="btn btn-outline-light btn-sm">9</button>
+      <button class="btn btn-outline-light btn-sm">10</button>
+    </div>
+  </div>
+
+  <div class="me-2">
+    <select class="form-select form-select-sm bg-dark text-white border-0">
+      <option selected>Tối</option>
+      <option>Sáng</option>
+    </select>
+  </div>
+  <div class="me-2">
+    <select class="form-select form-select-sm">
+      <option selected>C++</option>
+      <option>Python</option>
+      <option>Java</option>
+      <option>JavaScript</option>
+    </select>
+  </div>
+
+  <button class="btn btn-primary btn-sm me-2"><i class="bi bi-play-fill me-1"></i>Chạy thử</button>
+  <button class="btn btn-outline-light btn-sm"><i class="bi bi-upload me-1"></i>Nộp bài</button>
+</div>
+
+<!-- Main Two Pane -->
+<div class="container-fluid main">
+  <div class="row h-100 g-0">
+
+    <!-- LEFT: comments + rail -->
+    <div class="col-lg-6 d-flex">
+
+      <!-- icon rail -->
+      <div class="rail d-flex flex-column align-items-center py-3">
+        <a class="nav-link active" href="#" title="Trang bài"><i class="bi bi-layout-text-window-reverse fs-5"></i></a>
+        <a class="nav-link" href="#" title="Nội dung"><i class="bi bi-journal-text fs-5"></i></a>
+        <a class="nav-link" href="#" title="Mục lục"><i class="bi bi-list-task fs-5"></i></a>
+        <a class="nav-link" href="#" title="Lịch sử"><i class="bi bi-clock-history fs-5"></i></a>
+        <a class="nav-link position-relative" href="#" title="Thảo luận">
+          <i class="bi bi-chat-dots fs-5"></i>
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">26</span>
+        </a>
+        <a class="nav-link" href="#" title="Hỗ trợ"><i class="bi bi-life-preserver fs-5"></i></a>
+      </div>
+
+      <!-- comments area -->
+      <div class="flex-grow-1 comments-wrap">
+        <div class="comments-scroll">
+          <!-- input -->
+          <div class="d-flex mb-3">
+            <div class="avatar me-2">U</div>
+            <div class="flex-grow-1">
+              <textarea class="form-control mb-2" rows="3" placeholder="Viết bình luận của bạn"></textarea>
+              <button class="btn btn-primary btn-sm" disabled>Gửi bình luận</button>
+            </div>
+          </div>
+
+          <!-- comment item -->
+          <div class="comment-box">
+            <div class="d-flex">
+              <div class="avatar me-2 position-relative">V
+                <span class="badge-crown"><i class="bi bi-award-fill"></i></span>
+              </div>
+              <div>
+                <h6 class="mb-1">vkh <small class="text-muted">· 5 tháng trước</small></h6>
+                <p class="mb-2">Cho mình hỏi <code>res += v[i]</code> là gì vậy, mình chưa hiểu mong mọi người chỉ giáo.</p>
+                <div class="d-flex align-items-center">
+                  <span class="vote"><i class="bi bi-hand-thumbs-up"></i> 0</span>
+                  <span class="vote"><i class="bi bi-hand-thumbs-down"></i> 0</span>
+                  <a href="#"><i class="bi bi-reply"></i> Trả lời</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- reply -->
+          <div class="comment-box comment-reply">
+            <div class="d-flex">
+              <div class="avatar me-2">2</div>
+              <div>
+                <h6 class="mb-1">21092005 <small class="text-muted">· 5 tháng trước</small></h6>
+<pre class="bg-light p-2 rounded"><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+int Ham(vector&lt;int&gt; v) {
+  int res = 0;
+  for(int i=0;i&lt;v.size();i++) res += v[i];
+  return res;
+}</code></pre>
+                <div class="d-flex align-items-center">
+                  <span class="vote"><i class="bi bi-hand-thumbs-up"></i> 1</span>
+                  <span class="vote"><i class="bi bi-hand-thumbs-down"></i> 0</span>
+                  <a href="#"><i class="bi bi-reply"></i> Trả lời</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- another comment -->
+          <div class="comment-box">
+            <div class="d-flex">
+              <div class="avatar me-2">A</div>
+              <div>
+                <h6 class="mb-1">anhnv <small class="text-muted">· 4 tháng trước</small></h6>
+                <p class="mb-2">Bạn có thể dùng <code>accumulate</code> từ &lt;numeric&gt; cho ngắn.</p>
+                <div class="d-flex align-items-center">
+                  <span class="vote"><i class="bi bi-hand-thumbs-up"></i> 3</span>
+                  <span class="vote"><i class="bi bi-hand-thumbs-down"></i> 0</span>
+                  <a href="#"><i class="bi bi-reply"></i> Trả lời</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /comments-scroll -->
+      </div><!-- /comments-wrap -->
+    </div><!-- /LEFT -->
+
+    <!-- RIGHT: editor + tests -->
+    <div class="col-lg-6 editor-wrap p-3">
+      <!-- editor toolbar -->
+      <div class="editor-toolbar d-flex align-items-center gap-2 rounded-14 mb-2">
+        <button class="btn btn-outline-light btn-sm"><i class="bi bi-braces-asterisk"></i></button>
+        <div class="ms-auto d-flex gap-2">
+          <select class="form-select form-select-sm bg-dark text-white border-0" style="width:120px">
+            <option selected>C++</option><option>Python</option><option>Java</option><option>JS</option>
+          </select>
+          <select class="form-select form-select-sm bg-dark text-white border-0" style="width:120px">
+            <option selected>Tối</option><option>Sáng</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- editor -->
+      <div class="editor rounded-14 mb-3">
+<pre><code>int sumOfVector(vector&lt;int&gt; v) {
+    int res = 0;
+    for (int i = 0; i &lt; v.size(); i++) {
+        res += v[i];
+    }
+    return res;
+}</code></pre>
+      </div>
+
+      <!-- Test panel -->
+      <div class="test-panel mb-2">
+        <div class="panel-h">KIỂM THỬ</div>
+        <div class="px-3 py-2 text-white-50">Vui lòng chạy thử code của bạn trước!</div>
+
+        <div class="test-list list-group list-group-flush">
+          <div class="list-group-item">
+            <div class="fw-semibold mb-2">Kiểm thử 1</div>
+            <div class="table-responsive">
+              <table class="table table-sm table-dark-blue align-middle mb-0">
+                <tbody>
+                  <tr><th style="width:180px">Đầu vào</th><td>[1,2,3]</td></tr>
+                  <tr><th>Đầu ra thực tế</th><td>(chưa chạy)</td></tr>
+                  <tr><th>Đầu ra mong đợi</th><td>6</td></tr>
+                  <tr><th>Giới hạn thời gian</th><td>2000 ms</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="list-group-item locked d-flex justify-content-between">
+            <div>🔒 Kiểm thử 2</div><div class="text-white-50">ẩn</div>
+          </div>
+          <div class="list-group-item locked d-flex justify-content-between">
+            <div>🔒 Kiểm thử 3</div><div class="text-white-50">ẩn</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex gap-2">
+        <button class="btn btn-success btn-sm"><i class="bi bi-play-fill me-1"></i>Chạy thử</button>
+        <button class="btn btn-secondary btn-sm"><i class="bi bi-box-arrow-in-right me-1"></i>Nộp bài</button>
+      </div>
+    </div><!-- /RIGHT -->
+
+  </div>
+</div>
+
+</body>
+</html>

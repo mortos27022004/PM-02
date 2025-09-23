@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Code đa ngôn ngữ — Luyện tập</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+<style>
+  :root{
+    --nav:#0c2440; --sub:#0e2742; --ink:#dbe6ff;
+    --left-rail:#0f2742; --left-bg:#ffffff; --right-bg:#071a2f;
+    --editor:#1e1e1e; --bar:#0e2846;
+    --test:#242b45; --test-head:#2c3352; --test-list:#2c3352; --test-active:#3a436b;
+    --split:#a9b0c3; --primary:#5b78ff;
+  }
+  html,body{height:100%;}
+  body{background:#0b2238;color:#fff;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";}
+
+  .appbar{background:var(--nav); height:56px;}
+  .appbar .nav-link{color:#cbd4e6!important;}
+  .appbar .nav-link.active{color:#fff!important;}
+
+  .subbar{background:var(--sub); color:#fff; height:56px; display:flex; align-items:center; padding:0 16px; border-bottom:1px solid rgba(255,255,255,.06);}
+  .subbar .title{font-weight:600;}
+
+  .workspace{height:calc(100vh - 56px - 56px);}
+  .left-pane{background:var(--left-bg); color:#111; display:flex; height:100%;}
+  .rail{width:58px; background:var(--left-rail); border-right:1px solid rgba(255,255,255,.08);}
+  .rail .nav-link{color:#b8c2d6; height:56px; display:flex; align-items:center; justify-content:center;}
+  .rail .nav-link:hover,.rail .nav-link.active{background:#0b1f34; color:#fff;}
+  .rail .badge{position:absolute; right:10px; top:8px;}
+  .problem{flex:1; overflow:auto; padding:16px; border-right:2px solid #e9edf5;}
+  .problem img{max-width:100%; border:2px solid #2051ff;}
+  .right-pane{background:var(--right-bg); height:100%; display:flex; flex-direction:column; padding:12px;}
+
+  /* ===== Editor toolbar (đã chống wrap) ===== */
+  .editor-bar{
+    background:var(--bar); color:var(--ink);
+    border-radius:10px; padding:8px;
+    display:flex; align-items:center; gap:8px;
+    flex-wrap: nowrap;               /* chống xuống dòng */
+    overflow-x: auto; overflow-y: hidden; /* nếu hẹp thì trượt ngang */
+    -webkit-overflow-scrolling: touch;
+  }
+  .editor-bar::-webkit-scrollbar{height:8px;} /* gọn scrollbar ngang */
+  .editor-bar .btn{ white-space: nowrap; }
+  .editor-bar .form-select{ min-width:110px; width:auto; } /* gọn select */
+  .editor-actions{ display:flex; align-items:center; gap:8px; flex-wrap:nowrap; }
+
+  .btn-primary{background:var(--primary); border-color:var(--primary);}
+  .btn-primary:hover{background:#4666ff; border-color:#4666ff;}
+  .btn-outline-light{--bs-btn-color:#e7ecff; --bs-btn-border-color:#8fa3ff40; --bs-btn-hover-bg:#324b88; --bs-btn-hover-border-color:#324b88}
+
+  .editor{background:var(--editor); color:#dcdcdc; border-radius:10px; margin-top:8px; flex:1; overflow:auto; font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:15px;}
+  .editor textarea{width:100%; height:100%; background:transparent; color:inherit; border:0; outline:none; resize:none; padding:14px 16px; line-height:1.45;}
+
+  .splitbar{height:8px; background:#1b2137; border-top:1px solid var(--split); border-bottom:1px solid var(--split); position:relative;}
+  .splitbar .knob{position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:34px; height:34px; background:#fff; color:#2b3350; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(0,0,0,.45);}
+
+  .tests{background:var(--test); border-radius:10px; overflow:hidden; transition:height .22s ease; height:340px;}
+  .tests.collapsed{height:0; border:0;}
+  .tests .head{background:var(--test-head); padding:10px 14px; font-weight:600; border-bottom:1px solid #3e466c;}
+  .tests .sub{padding:8px 14px; color:#c8d0ee; border-bottom:1px solid #3e466c;}
+  .test-list{background:var(--test-list); height:260px; overflow:auto;}
+  .test-list .list-group-item{background:transparent; color:#e9eeff; border:0; border-bottom:1px solid #3e466c; padding:.75rem 1rem;}
+  .test-list .list-group-item.active{background:var(--test-active);}
+  .test-detail{background:#31395f; height:260px; overflow:auto; border-left:1px solid #3e466c;}
+  .table-blue{ --bs-table-bg:#31395f; --bs-table-striped-bg:#2b3458; --bs-table-hover-bg:#3a4470; color:#edf2ff;}
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand appbar navbar-dark px-3">
+  <a class="navbar-brand fw-bold" href="#"><i class="bi bi-code-square me-2"></i>CODELEARN</a>
+  <ul class="navbar-nav mx-auto d-none d-md-flex">
+    <li class="nav-item"><a class="nav-link" href="#">Học tập</a></li>
+    <li class="nav-item"><a class="nav-link active" href="#">Luyện tập</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Thi đấu</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Sự kiện</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Xếp hạng</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Người đóng góp</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Chia sẻ</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Phòng trưng bày</a></li>
+  </ul>
+  <div class="d-flex align-items-center gap-3">
+    <a class="text-white-50" href="#"><i class="bi bi-cart"></i></a>
+    <a class="text-white-50" href="#"><i class="bi bi-bell"></i></a>
+    <img src="https://flagcdn.com/w20/vn.png" width="20" height="20" class="rounded-circle" alt="VN">
+    <div class="bg-white rounded-circle" style="width:28px;height:28px;"></div>
+  </div>
+</nav>
+
+<div class="subbar"><div class="title">diagonalOfCross</div></div>
+
+<div class="container-fluid workspace">
+  <div class="row h-100 g-0">
+    <div class="col-lg-6 left-pane">
+      <div class="rail d-flex flex-column align-items-center py-2 position-relative">
+        <a class="nav-link active" href="#" title="Bài"><i class="bi bi-layout-text-window-reverse fs-5"></i></a>
+        <a class="nav-link" href="#"><i class="bi bi-list-task fs-5"></i></a>
+        <a class="nav-link" href="#"><i class="bi bi-journal-text fs-5"></i></a>
+        <a class="nav-link" href="#"><i class="bi bi-clock-history fs-5"></i></a>
+        <a class="nav-link position-relative" href="#" title="Thảo luận">
+          <i class="bi bi-chat-dots fs-5"></i>
+          <span class="badge rounded-pill bg-primary">136</span>
+        </a>
+        <a class="nav-link" href="#"><i class="bi bi-question-circle fs-5"></i></a>
+      </div>
+
+      <div class="problem">
+        <div class="d-flex align-items-center gap-2 mb-2">
+          <img src="https://i.imgur.com/2C4rXvE.png" width="32" height="32" alt="atom">
+          <span class="fw-semibold">atom</span>
+          <span class="badge text-bg-success">Đơn Giản</span>
+          <span class="badge text-bg-primary"><i class="bi bi-star-fill me-1"></i>100 Điểm</span>
+          <span class="ms-auto small text-muted">Giới hạn kí tự: <b class="text-danger">80</b></span>
+          <select class="form-select form-select-sm" style="width:120px">
+            <option>Tiếng Việt</option><option>English</option>
+          </select>
+        </div>
+        <p>Hình chữ thập là hình được tạo bởi 5 hình vuông ghép lại với nhau như hình dưới.</p>
+        <div class="text-center mb-3">
+          <img src="https://i.imgur.com/0d9zq7y.png" alt="cross">
+        </div>
+        <p>Biết diện tích của hình chữ thập đó là <b>S</b>. Tính độ dài đường chéo AB của hình chữ thập và làm tròn kết quả tới một chữ số <u>phần thập phân</u>.</p>
+        <p class="mb-1"><b>Ví dụ:</b></p>
+        <pre class="bg-light p-2 rounded small">Input: 5
+Output: 3.2</pre>
+      </div>
+    </div>
+
+    <div class="col-lg-6 right-pane">
+      <!-- TOOLBAR: luôn 1 hàng -->
+      <div class="editor-bar">
+        <button class="btn btn-outline-light btn-sm" title="Định dạng">
+          <i class="bi bi-braces-asterisk"></i>
+        </button>
+
+        <select class="form-select form-select-sm bg-dark text-white border-0 w-auto">
+          <option selected>C++</option><option>Python</option>
+          <option>Java</option><option>C#</option><option>JavaScript</option>
+        </select>
+
+        <div class="editor-actions ms-auto">
+          <button id="resetBtn" class="btn btn-outline-light btn-sm">
+            <i class="bi bi-arrow-counterclockwise me-1"></i>Cài đặt lại
+          </button>
+
+          <select id="themeSel" class="form-select form-select-sm bg-dark text-white border-0 w-auto">
+            <option selected>Tối</option><option>Sáng</option>
+          </select>
+
+          <button id="runBtn" class="btn btn-primary btn-sm">
+            <i class="bi bi-play-fill me-1"></i>Chạy thử
+          </button>
+
+          <button class="btn btn-outline-light btn-sm" disabled>
+            <i class="bi bi-upload me-1"></i>Nộp bài(20)
+          </button>
+        </div>
+      </div>
+
+      <div class="editor">
+<textarea id="code" spellcheck="false">float diagonalOfCross(int S)
+{
+    // Viết code tại đây...
+    return 0.0f;
+}</textarea>
+      </div>
+
+      <div class="splitbar">
+        <button id="toggleTests" class="knob" title="Thu/Mở KIỂM THỬ"><i id="chev" class="bi bi-chevron-down"></i></button>
+      </div>
+
+      <div id="testsPanel" class="tests">
+        <div class="head">KIỂM THỬ</div>
+        <div class="sub"><em>Vui lòng chạy thử code của bạn trước!</em></div>
+        <div class="row g-0">
+          <div class="col-3">
+            <div class="list-group list-group-flush test-list" id="testList">
+              <button class="list-group-item list-group-item-action active" data-test="1">Kiểm thử 1</button>
+              <button class="list-group-item list-group-item-action" data-test="2">Kiểm thử 2</button>
+              <button class="list-group-item list-group-item-action" data-test="3">Kiểm thử 3</button>
+            </div>
+          </div>
+          <div class="col-9 test-detail p-3">
+            <div class="table-responsive">
+              <table class="table table-sm table-blue align-middle mb-0">
+                <tbody id="testDetail">
+                  <tr><th style="width:200px">Đầu vào</th><td id="inVal">5</td></tr>
+                  <tr><th>Đầu ra thực tế</th><td id="actualVal">(chưa chạy)</td></tr>
+                  <tr><th>Đầu ra mong đợi</th><td id="expectVal">3.2</td></tr>
+                  <tr><th>Giới hạn thời gian</th><td id="limitVal">100 ms</td></tr>
+                  <tr><th>Thời gian thực thi</th><td id="rtVal">—</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div><!-- /tests -->
+    </div>
+  </div>
+</div>
+
+<script>
+  const panel = document.getElementById('testsPanel');
+  const chev  = document.getElementById('chev');
+  document.getElementById('toggleTests').addEventListener('click', ()=>{
+    const collapsed = panel.classList.toggle('collapsed');
+    chev.classList.toggle('bi-chevron-down', !collapsed);
+    chev.classList.toggle('bi-chevron-up', collapsed);
+  });
+
+  const inputs  = {1:'5', 2:'12', 3:'50'};
+  const expects = {1:'3.2', 2:'5.4', 3:'12.5'};
+  const limits  = {1:'100 ms', 2:'120 ms', 3:'120 ms'};
+  document.querySelectorAll('#testList .list-group-item').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('#testList .list-group-item').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const id = btn.dataset.test;
+      inVal.textContent     = inputs[id];
+      expectVal.textContent = expects[id];
+      limitVal.textContent  = limits[id];
+      actualVal.textContent = '(chưa chạy)';
+      rtVal.textContent     = '—';
+    });
+  });
+
+  runBtn.addEventListener('click', ()=>{
+    const expect = expectVal.textContent.trim();
+    const ok = code.value.includes(expect);
+    const t0 = performance.now(), t1 = t0 + Math.random()*20 + 5;
+    actualVal.textContent = ok ? expect : '(demo) 0.0';
+    rtVal.textContent = `${(t1-t0).toFixed(1)} ms`;
+  });
+
+  resetBtn.addEventListener('click', ()=>{
+    code.value =
+`float diagonalOfCross(int S)
+{
+    // Viết lại lời giải tại đây...
+    return 0.0f;
+}`;
+    actualVal.textContent='(chưa chạy)'; rtVal.textContent='—';
+  });
+
+  themeSel.addEventListener('change', (e)=>{ document.body.style.background = e.target.value === 'Sáng' ? '#f2f6ff' : '#0b2238'; });
+</script>
+</body>
+</html>
