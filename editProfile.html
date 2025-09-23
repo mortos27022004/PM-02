@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Thông tin tài khoản</title>
+<title data-i18n="title">Thông tin tài khoản</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 <style>
   body{ background:#f3f5f9; }
 
-  /* ===== TOP NAVBAR like CodeLearn ===== */
+  /* ===== TOP NAVBAR ===== */
   .topbar { background:#0c2440; height:64px; }
   .topbar .navbar-brand{ font-weight:800; letter-spacing:.2px; }
   .topbar .nav-link{ color:#cbd4e6!important; font-weight:600; padding:0 .85rem; }
@@ -17,27 +17,47 @@
   .topbar .icon-btn{ color:#cbd4e6; font-size:1.1rem; }
   .topbar .icon-btn:hover{ color:#fff; }
 
+  /* Language button = chỉ hiển thị cờ hiện tại */
+  .btn-flag{ width:32px; height:32px; border-radius:50%; padding:0; border:0; background:transparent; overflow:hidden; line-height:0; box-shadow:0 0 0 1px rgba(255,255,255,.35) inset; }
+  .btn-flag:hover{ box-shadow:0 0 0 1.5px rgba(255,255,255,.7) inset; }
+  .btn-flag.dropdown-toggle::after{ display:none!important; }
+  .btn-flag img{ width:100%; height:100%; object-fit:cover; border-radius:50%; display:block; }
+
+  .btn-avatar{ width:34px; height:34px; border-radius:50%; border:0; background:#fff; display:flex; align-items:center; justify-content:center; }
+  .btn-avatar .bi{ color:#9aa3b2; font-size:1.2rem; }
+
+  .dropdown-menu{ border-radius:12px; border:1px solid #e6e9f2; box-shadow:0 12px 28px rgba(0,0,0,.12); }
+  .dropdown-item .flag{ width:20px; height:20px; border-radius:50%; object-fit:cover; margin-right:.6rem; }
+
   /* ===== Content box ===== */
-  .card-box{
-    border-radius:14px; background:#fff;
-    box-shadow:0 6px 14px rgba(14,24,50,.06);
-  }
+  .card-box{ border-radius:14px; background:#fff; box-shadow:0 6px 14px rgba(14,24,50,.06); }
   .section-title{ font-size:28px; font-weight:800; letter-spacing:.2px; }
-  .avatar-wrap{
-    width:120px; height:120px; border:6px solid #e6cda6; /* viền gỗ mô phỏng */
-    border-radius:50%; display:flex; align-items:center; justify-content:center;
-    background:#f2f2f2;
-  }
-  .avatar-wrap .img{
-    width:90px; height:90px; border-radius:50%; background:#dadfe8;
-    display:flex; align-items:center; justify-content:center; color:#8a97ad; font-size:32px;
-  }
+  .avatar-wrap{ width:120px; height:120px; border:6px solid #e6cda6; border-radius:50%; display:flex; align-items:center; justify-content:center; background:#f2f2f2; }
+  .avatar-wrap .img{ width:90px; height:90px; border-radius:50%; background:#dadfe8; display:flex; align-items:center; justify-content:center; color:#8a97ad; font-size:32px; }
   .info-row{ padding:10px 0; border-bottom:1px dashed #eef1f6; }
   .info-row:last-child{ border-bottom:0; }
   .label{ color:#7b8798; min-width:220px; }
   .value{ color:#0f1f3d; font-weight:600; }
   .badge-required::after{ content:" *"; color:#e55353; }
   @media (max-width: 768px){ .label{ min-width:140px; } }
+
+  /* ===== Update Modal ===== */
+  .modal-content{ border-radius:14px; }
+  .modal-header{ border-bottom:0; }
+  .profile-modal .avatar-ctr{
+    width:120px; height:120px; border:6px solid #e6cda6; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; background:#f2f2f2; margin:0 auto 10px;
+  }
+  .profile-modal .avatar-ctr .img{ width:90px; height:90px; border-radius:50%; background:#dadfe8;
+    display:flex; align-items:center; justify-content:center; color:#8a97ad; font-size:32px; }
+  .profile-modal .camera-btn{
+    position:absolute; right:calc(50% - 60px); top:78px; transform:translateX(100%); border-radius:999px;
+  }
+  .form-label .req::after{ content:" *"; color:#e55353; }
+  .form-control, .form-select{ height:44px; }
+  .input-icon{ position:relative; }
+  .input-icon .bi{ position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#92a0b4; }
+  .input-icon input{ padding-left:38px; }
 </style>
 </head>
 <body>
@@ -45,38 +65,63 @@
 <!-- ===== TOP BAR ===== -->
 <nav class="navbar navbar-expand-lg navbar-dark topbar sticky-top">
   <div class="container-fluid px-3">
-    <!-- Brand -->
     <a class="navbar-brand d-flex align-items-center" href="#">
-      <!-- Bạn có thể thay ảnh logo bên dưới bằng logo của bạn -->
       <img src="https://i.imgur.com/5d0j0aX.png" alt="" width="34" height="34" class="me-2">
       CODELEARN
     </a>
 
-    <!-- Toggler -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- Center menu -->
     <div class="collapse navbar-collapse" id="mainNav">
       <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link" href="#">Học tập</a></li>
-        <li class="nav-item"><a class="nav-link active" href="#">Luyện tập</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Thi đấu</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Thử thách</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Sự kiện</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Xếp hạng</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Người đóng góp</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Chia sẻ</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Phòng trưng bày</a></li>
+        <li class="nav-item"><a class="nav-link" data-i18n="nav.learn" href="#">Học tập</a></li>
+        <li class="nav-item"><a class="nav-link active" data-i18n="nav.train" href="#">Luyện tập</a></li>
+        <li class="nav-item"><a class="nav-link" data-i18n="nav.fight" href="#">Thi đấu</a></li>
+        <li class="nav-item"><a class="nav-link" data-i18n="nav.challenge" href="#">Thử thách</a></li>
+        <li class="nav-item"><a class="nav-link" data-i18n="nav.event" href="#">Sự kiện</a></li>
+        <li class="nav-item"><a class="nav-link" data-i18n="nav.leaders" href="#">Xếp hạng</a></li>
+        <li class="nav-item"><a class="nav-link" data-i18n="nav.contrib" href="#">Người đóng góp</a></li>
+        <li class="nav-item"><a class="nav-link" data-i18n="nav.gallery" href="#">Phòng trưng bày</a></li>
       </ul>
 
-      <!-- Right actions -->
       <div class="d-flex align-items-center gap-3">
-        <a class="icon-btn" href="#" title="Giỏ hàng"><i class="bi bi-cart"></i></a>
-        <a class="icon-btn" href="#" title="Thông báo"><i class="bi bi-bell"></i></a>
-        <img src="https://flagcdn.com/w20/vn.png" width="20" height="20" class="rounded-circle" alt="VN">
-        <div class="rounded-circle bg-white" style="width:32px;height:32px;"></div>
+        <a class="icon-btn" href="#" title="Cart"><i class="bi bi-cart"></i></a>
+        <a class="icon-btn" href="#" title="Notifications"><i class="bi bi-bell"></i></a>
+
+        <!-- Language dropdown -->
+        <div class="dropdown">
+          <button class="btn-flag dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Language">
+            <img id="langFlag" src="https://flagcdn.com/w20/vn.png" alt="lang">
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end p-2">
+            <li><a class="dropdown-item d-flex align-items-center lang-option" data-lang="en" href="#"><img class="flag" src="https://flagcdn.com/w20/gb.png" alt=""> English</a></li>
+            <li><a class="dropdown-item d-flex align-items-center lang-option" data-lang="vi" href="#"><img class="flag" src="https://flagcdn.com/w20/vn.png" alt=""> Tiếng Việt</a></li>
+          </ul>
+        </div>
+
+        <!-- Avatar dropdown -->
+        <div class="dropdown">
+          <button class="btn-avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person"></i></button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" data-i18n="menu.account" href="#">Thông tin tài khoản</a></li>
+            <li><a class="dropdown-item" data-i18n="menu.profile" href="#">Hồ sơ của tôi</a></li>
+            <li><a class="dropdown-item" data-i18n="menu.friends" href="#">Bạn bè</a></li>
+            <li><a class="dropdown-item" data-i18n="menu.classes" href="#">Lớp của tôi</a></li>
+            <li><a class="dropdown-item" data-i18n="menu.payHistory" href="#">Lịch sử thanh toán</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li class="px-2">
+              <button class="btn w-100 text-start dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#paySubmenu" data-i18n="menu.payManage">Quản lý thanh toán</button>
+              <div id="paySubmenu" class="collapse mt-1">
+                <a class="dropdown-item" data-i18n="menu.methods" href="#">Phương thức thanh toán</a>
+                <a class="dropdown-item" data-i18n="menu.invoices" href="#">Hóa đơn của tôi</a>
+              </div>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-danger" data-i18n="menu.logout" href="#">Thoát</a></li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -86,8 +131,8 @@
 <div class="container-fluid py-3">
   <nav style="--bs-breadcrumb-divider: '›';" aria-label="breadcrumb">
     <ol class="breadcrumb mb-0 small">
-      <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Trang chủ</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Thông tin tài khoản</li>
+      <li class="breadcrumb-item"><a href="#" class="text-decoration-none" data-i18n="crumb.home">Trang chủ</a></li>
+      <li class="breadcrumb-item active" aria-current="page" data-i18n="crumb.account">Thông tin tài khoản</li>
     </ol>
   </nav>
 </div>
@@ -96,77 +141,241 @@
 <div class="container-fluid pb-5">
   <div class="card-box p-4 mx-3">
     <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-3">
-      <div class="section-title">THÔNG TIN</div>
+      <div class="section-title" data-i18n="section.info">THÔNG TIN</div>
       <div>
-        
-        <button class="btn btn-outline-primary"><i class="bi bi-pencil me-1"></i>Cập nhật</button>
+        <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#updateModal">
+          <i class="bi bi-pencil me-1"></i><span data-i18n="btn.update">Cập nhật</span>
+        </button>
       </div>
     </div>
 
     <div class="row g-4">
       <div class="col-auto">
         <div class="position-relative">
-          <div class="avatar-wrap">
-            <div class="img"><i class="bi bi-person"></i></div>
-          </div>
+          <div class="avatar-wrap"><div class="img"><i class="bi bi-person"></i></div></div>
           <i class="bi bi-star-fill text-warning position-absolute" style="top:-8px; left:50%; transform:translateX(-50%);"></i>
         </div>
       </div>
-
       <div class="col">
-        <div class="info-row d-flex align-items-center flex-wrap">
-          <div class="label badge-required me-3">Họ tên</div>
-          <div class="value">—</div>
+        <div class="info-row d-flex align-items-center flex-wrap"><div class="label badge-required me-3" data-i18n="field.fullname">Họ tên</div><div class="value">—</div></div>
+        <div class="info-row d-flex align-items-center flex-wrap"><div class="label badge-required me-3" data-i18n="field.username">Tên tài khoản</div><div class="value">ssvipvipss2003@gmail.com</div></div>
+        <div class="info-row d-flex align-items-center flex-wrap"><div class="label badge-required me-3" data-i18n="field.email">Địa chỉ Email</div><div class="value">ssvipvipss2003@gmail.com</div></div>
+        <div class="info-row d-flex align-items-center flex-wrap"><div class="label badge-required me-3" data-i18n="field.birthday">Ngày sinh</div><div class="value">—</div></div>
+        <div class="info-row d-flex align-items-center flex-wrap"><div class="label badge-required me-3" data-i18n="field.phone">Số điện thoại</div><div class="value">—</div></div>
+        <div class="info-row d-flex align-items-center flex-wrap"><div class="label badge-required me-3" data-i18n="field.country">Quốc gia/Vùng</div><div class="value">Việt Nam</div></div>
+        <div class="info-row d-flex align-items-center flex-wrap"><div class="label badge-required me-3" data-i18n="field.province">Tỉnh</div><div class="value">—</div></div>
+        <div class="info-row d-flex align-items-center flex-wrap"><div class="label badge-required me-3" data-i18n="field.district">Quận/huyện</div><div class="value">—</div></div>
+        <div class="info-row d-flex align-items-center flex-wrap"><div class="label badge-required me-3" data-i18n="field.citizen">Căn cước công dân</div><div class="value">—</div></div>
+        <div class="info-row d-flex align-items-center flex-wrap"><div class="label badge-required me-3" data-i18n="field.school">Trường học</div><div class="value">—</div></div>
+        <div class="info-row d-flex align-items-center flex-wrap"><div class="label badge-required me-3" data-i18n="field.grade">Khối/chuyên ngành</div><div class="value">—</div></div>
+        <div class="info-row d-flex align-items-center flex-wrap"><div class="label me-3" data-i18n="field.address">Địa chỉ</div><div class="value">—</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL CẬP NHẬT HỒ SƠ ===== -->
+<div class="modal fade profile-modal" id="updateModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold" data-i18n="modal.title">CẬP NHẬT HỒ SƠ</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Avatar -->
+        <div class="position-relative mb-2">
+          <div class="avatar-ctr"><div id="modalAvatar" class="img"><i class="bi bi-person"></i></div></div>
+          <label class="btn btn-light border camera-btn" title="Đổi ảnh" data-i18n-attr="title:modal.changePhoto">
+            <i class="bi bi-camera"></i>
+            <input id="avatarInput" type="file" accept="image/*" hidden>
+          </label>
+          <i class="bi bi-star-fill text-warning position-absolute" style="top:22px; left:50%; transform:translateX(-50%);"></i>
         </div>
-        <div class="info-row d-flex align-items-center flex-wrap">
-          <div class="label badge-required me-3">Tên tài khoản</div>
-          <div class="value">ssvipvipss2003@gmail.com</div>
+
+        <div class="row g-3">
+          <div class="col-lg-6">
+            <label class="form-label"><span class="req" data-i18n="field.fullname">Họ tên</span></label>
+            <input class="form-control" data-i18n-attr="placeholder:ph.fullname" placeholder="Nhập họ và tên">
+          </div>
+          <div class="col-lg-6">
+            <label class="form-label"><span class="req" data-i18n="field.birthday">Ngày sinh</span></label>
+            <div class="input-icon">
+              <i class="bi bi-calendar3"></i>
+              <input type="date" class="form-control" data-i18n-attr="placeholder:ph.birthday" placeholder="Ngày sinh">
+            </div>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label"><span class="req" data-i18n="field.phone">Số điện thoại</span></label>
+            <input class="form-control" data-i18n-attr="placeholder:ph.phone" placeholder="Nhập số điện thoại">
+          </div>
+
+          <div class="col-lg-6">
+            <label class="form-label"><span class="req" data-i18n="field.province">Tỉnh</span></label>
+            <select id="province" class="form-select">
+              <option data-i18n="ph.pickProvince" selected>Chọn tỉnh thành</option>
+              <option>Hà Nội</option>
+              <option>TP. Hồ Chí Minh</option>
+              <option>Đà Nẵng</option>
+            </select>
+          </div>
+          <div class="col-lg-6">
+            <label class="form-label"><span class="req" data-i18n="field.district">Quận/huyện</span></label>
+            <select id="district" class="form-select" disabled>
+              <option data-i18n="ph.pickDistrict" selected>Chọn quận huyện</option>
+            </select>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label"><span class="req" data-i18n="field.citizen">Căn cước công dân</span></label>
+            <input class="form-control" data-i18n-attr="placeholder:ph.citizen" placeholder="Căn cước công dân">
+          </div>
+
+          <div class="col-12">
+            <label class="form-label"><span class="req" data-i18n="field.grade">Khối/chuyên ngành</span></label>
+            <select class="form-select">
+              <option data-i18n="ph.pickGrade" selected>Chọn khối</option><option>10</option><option>11</option><option>12</option>
+            </select>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label"><span class="req" data-i18n="field.school">Trường học</span></label>
+            <input class="form-control" data-i18n-attr="placeholder:ph.school" placeholder="Chọn trường học">
+          </div>
+
+          <div class="col-12">
+            <label class="form-label" data-i18n="field.address">Địa chỉ</label>
+            <input class="form-control" data-i18n-attr="placeholder:ph.address" placeholder="Nhập địa chỉ">
+          </div>
+
+          <div class="col-12">
+            <div class="form-check mt-1">
+              <input class="form-check-input" type="checkbox" id="agree">
+              <label class="form-check-label" for="agree" data-i18n="modal.agree">Tôi đồng ý chia sẻ thông tin và đồng ý với <a href="#" target="_blank">Chính sách bảo mật dữ liệu cá nhân</a></label>
+            </div>
+          </div>
         </div>
-        <div class="info-row d-flex align-items-center flex-wrap">
-          <div class="label badge-required me-3">Địa chỉ Email</div>
-          <div class="value">ssvipvipss2003@gmail.com</div>
-        </div>
-        <div class="info-row d-flex align-items-center flex-wrap">
-          <div class="label badge-required me-3">Ngày sinh</div>
-          <div class="value">—</div>
-        </div>
-        <div class="info-row d-flex align-items-center flex-wrap">
-          <div class="label badge-required me-3">Số điện thoại</div>
-          <div class="value">—</div>
-        </div>
-        <div class="info-row d-flex align-items-center flex-wrap">
-          <div class="label badge-required me-3">Quốc gia/Vùng</div>
-          <div class="value">Việt Nam</div>
-        </div>
-        <div class="info-row d-flex align-items-center flex-wrap">
-          <div class="label badge-required me-3">Tỉnh</div>
-          <div class="value">—</div>
-        </div>
-        <div class="info-row d-flex align-items-center flex-wrap">
-          <div class="label badge-required me-3">Quận/huyện</div>
-          <div class="value">—</div>
-        </div>
-        <div class="info-row d-flex align-items-center flex-wrap">
-          <div class="label badge-required me-3">Căn cước công dân</div>
-          <div class="value">—</div>
-        </div>
-        <div class="info-row d-flex align-items-center flex-wrap">
-          <div class="label badge-required me-3">Trường học</div>
-          <div class="value">—</div>
-        </div>
-        <div class="info-row d-flex align-items-center flex-wrap">
-          <div class="label badge-required me-3">Khối/chuyên ngành</div>
-          <div class="value">—</div>
-        </div>
-        <div class="info-row d-flex align-items-center flex-wrap">
-          <div class="label me-3">Địa chỉ</div>
-          <div class="value">—</div>
-        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary w-100" data-i18n="btn.update">Cập nhật</button>
       </div>
     </div>
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // ====== TỪ ĐIỂN EN / VI ======
+  const dict = {
+    vi: {
+      title: "Thông tin tài khoản",
+      nav:{learn:"Học tập",train:"Luyện tập",fight:"Thi đấu",challenge:"Thử thách",event:"Sự kiện",leaders:"Xếp hạng",contrib:"Người đóng góp",gallery:"Phòng trưng bày"},
+      menu:{account:"Thông tin tài khoản",profile:"Hồ sơ của tôi",friends:"Bạn bè",classes:"Lớp của tôi",payHistory:"Lịch sử thanh toán",payManage:"Quản lý thanh toán",methods:"Phương thức thanh toán",invoices:"Hóa đơn của tôi",logout:"Thoát"},
+      crumb:{home:"Trang chủ",account:"Thông tin tài khoản"},
+      section:{info:"THÔNG TIN"},
+      btn:{update:"Cập nhật"},
+      field:{fullname:"Họ tên",username:"Tên tài khoản",email:"Địa chỉ Email",birthday:"Ngày sinh",phone:"Số điện thoại",country:"Quốc gia/Vùng",province:"Tỉnh",district:"Quận/huyện",citizen:"Căn cước công dân",school:"Trường học",grade:"Khối/chuyên ngành",address:"Địa chỉ"},
+      modal:{title:"CẬP NHẬT HỒ SƠ",changePhoto:"Đổi ảnh",agree:'Tôi đồng ý chia sẻ thông tin và đồng ý với <a href="#" target="_blank">Chính sách bảo mật dữ liệu cá nhân</a>'},
+      ph:{fullname:"Nhập họ và tên",birthday:"Ngày sinh",phone:"Nhập số điện thoại",pickProvince:"Chọn tỉnh thành",pickDistrict:"Chọn quận huyện",citizen:"Căn cước công dân",pickGrade:"Chọn khối",school:"Chọn trường học",address:"Nhập địa chỉ"}
+    },
+    en: {
+      title: "My Information",
+      nav:{learn:"Learning",train:"Training",fight:"Fights",challenge:"Challenge",event:"Event",leaders:"Leaders",contrib:"Contributors",gallery:"Gallery"},
+      menu:{account:"Account info",profile:"My profile",friends:"Friends",classes:"My classes",payHistory:"Payment history",payManage:"Payment management",methods:"Payment methods",invoices:"My invoices",logout:"Log out"},
+      crumb:{home:"Home",account:"My information"},
+      section:{info:"INFORMATION"},
+      btn:{update:"Update"},
+      field:{fullname:"Full name",username:"User name",email:"Email address",birthday:"Birthday",phone:"Phone number",country:"Country/Region",province:"Province",district:"District",citizen:"Citizen identification",school:"School",grade:"Grade/major",address:"Address"},
+      modal:{title:"UPDATE PROFILE",changePhoto:"Change photo",agree:'I agree to share my information and accept the <a href="#" target="_blank">Personal data privacy policy</a>'},
+      ph:{fullname:"Enter full name",birthday:"Birthday",phone:"Enter phone number",pickProvince:"Select province",pickDistrict:"Select district",citizen:"Citizen ID",pickGrade:"Select grade",school:"Select school",address:"Enter address"}
+    }
+  };
+
+  // ====== HỖ TRỢ I18N CỰC NHẸ ======
+  function setLang(lang){
+    const res = dict[lang] || dict.vi;
+    // text nodes
+    document.querySelectorAll('[data-i18n]').forEach(el=>{
+      const key = el.getAttribute('data-i18n').split('.').reduce((a,k)=>a?.[k], res);
+      if(key != null){
+        // Nếu có HTML (như link trong agree) thì set HTML
+        if(key.includes && (key.includes('<a ') || key.includes('</'))) el.innerHTML = key;
+        else el.textContent = key;
+      }
+    });
+    // attributes: data-i18n-attr="placeholder:key, title:key2"
+    document.querySelectorAll('[data-i18n-attr]').forEach(el=>{
+      const pairs = el.getAttribute('data-i18n-attr').split(',').map(s=>s.trim());
+      pairs.forEach(p=>{
+        const [attr,k] = p.split(':').map(s=>s.trim());
+        const val = k.split('.').reduce((a,t)=>a?.[t], res);
+        if(val!=null) el.setAttribute(attr,val);
+      });
+    });
+    // <html lang=".."> + title
+    document.documentElement.lang = lang;
+    const pageTitleKey = document.querySelector('title').getAttribute('data-i18n');
+    document.title = pageTitleKey.split('.').reduce((a,k)=>dict[lang]?.[k]??a?.[k], dict[lang]);
+
+    // Flag + URL param
+    const flag = lang==='en' ? 'https://flagcdn.com/w20/gb.png' : 'https://flagcdn.com/w20/vn.png';
+    document.getElementById('langFlag').src = flag;
+    const url = new URL(window.location.href);
+    url.searchParams.set('lang', lang);
+    history.replaceState({}, '', url);
+    localStorage.setItem('lang', lang);
+  }
+
+  // init lang from URL ?lang=.. > localStorage > browser
+  (function initLang(){
+    const urlLang = new URL(location.href).searchParams.get('lang');
+    const saved = localStorage.getItem('lang');
+    const lang = urlLang || saved || 'vi';
+    setLang(lang);
+  })();
+
+  // menu click
+  document.querySelectorAll('.lang-option').forEach(a=>{
+    a.addEventListener('click', (e)=>{
+      e.preventDefault();
+      setLang(a.dataset.lang);
+    });
+  });
+
+  // giữ dropdown không đóng khi bấm trong submenu collapse
+  document.querySelectorAll('.dropdown .collapse').forEach(c=>c.addEventListener('click', e=>e.stopPropagation()));
+
+  // Avatar preview trong modal (demo)
+  document.getElementById('avatarInput').addEventListener('change', (e)=>{
+    const f = e.target.files?.[0]; if(!f) return;
+    if(f.size > 2*1024*1024){ alert('Max 2MB'); return; }
+    const url = URL.createObjectURL(f);
+    const box = document.getElementById('modalAvatar');
+    box.innerHTML = '';
+    box.style.backgroundImage = `url(${url})`;
+    box.style.backgroundSize = 'cover';
+    box.style.backgroundPosition = 'center';
+  });
+
+  // Province -> district (demo)
+  const province = document.getElementById('province');
+  const district = document.getElementById('district');
+  const districts = {
+    'Hà Nội': ['Ba Đình','Cầu Giấy','Đống Đa'],
+    'TP. Hồ Chí Minh': ['Quận 1','Quận 3','Bình Thạnh'],
+    'Đà Nẵng': ['Hải Châu','Thanh Khê','Sơn Trà']
+  };
+  province?.addEventListener('change', ()=>{
+    const p = province.value;
+    district.disabled = !districts[p];
+    district.innerHTML = `<option selected>${dict[localStorage.getItem('lang')||'vi'].ph.pickDistrict}</option>`;
+    (districts[p]||[]).forEach(d => {
+      const opt = document.createElement('option'); opt.textContent = d; district.appendChild(opt);
+    });
+  });
+</script>
 </body>
 </html>
