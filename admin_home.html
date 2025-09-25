@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Quản trị viên - CodeLearn</title>
+
+    <!-- Bootstrap 5 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <!-- Chart.js v4.4.0 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.min.js"></script>
+
+    <style>
+      :root {
+        --primary-dark: #0d1b2a;
+        --primary-blue: #1b263b;
+        --accent-blue: #415a77;
+        --light-blue: #778da9;
+        --accent: #06d6a0;
+        --warning: #ffd60a;
+        --danger: #f72585;
+      }
+
+      body {
+        background: #f8fafc;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        background: var(--primary-dark);
+        min-height: 100vh;
+        width: 250px;
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 1000;
+        transition: all 0.3s ease;
+      }
+
+      .sidebar.collapsed {
+        width: 70px;
+      }
+
+      .sidebar .nav-link {
+        color: #cbd5e1;
+        padding: 12px 20px;
+        border-radius: 8px;
+        margin: 4px 8px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .sidebar .nav-link:hover {
+        background: var(--accent-blue);
+        color: white;
+        transform: translateX(4px);
+      }
+
+      .sidebar .nav-link.active {
+        background: var(--accent);
+        color: white;
+      }
+
+      .sidebar .nav-link i {
+        width: 20px;
+        text-align: center;
+      }
+
+      .sidebar-text {
+        transition: opacity 0.3s ease;
+      }
+
+      .sidebar.collapsed .sidebar-text {
+        opacity: 0;
+        width: 0;
+      }
+
+      /* Main content */
+      .main-content {
+        margin-left: 250px;
+        transition: margin-left 0.3s ease;
+      }
+
+      .main-content.expanded {
+        margin-left: 70px;
+      }
+
+      /* Top navbar */
+      .top-navbar {
+        background: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      /* Statistics Cards */
+      .stat-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e2e8f0;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      }
+
+      .stat-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: var(--accent);
+      }
+
+      .stat-card.warning::before {
+        background: var(--warning);
+      }
+      .stat-card.danger::before {
+        background: var(--danger);
+      }
+      .stat-card.info::before {
+        background: #3b82f6;
+      }
+
+      .stat-number {
+        font-size: 2.5rem;
+        font-weight: 800;
+        line-height: 1;
+      }
+
+      /* Chart containers */
+      .chart-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e2e8f0;
+      }
+
+      .chart-card canvas {
+        max-width: 100%;
+        max-height: 400px;
+      }
+
+      #userChart {
+        height: 300px !important;
+      }
+
+      #roleChart {
+        max-height: 300px !important;
+        width: auto !important;
+      }
+
+      /* Data table */
+      .table-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e2e8f0;
+        overflow: hidden;
+      }
+
+      .table thead th {
+        background: #f8fafc;
+        border: none;
+        color: #475569;
+        font-weight: 600;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .badge-status {
+        padding: 6px 12px;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.75rem;
+      }
+
+      .badge-active {
+        background: #dcfce7;
+        color: #166534;
+      }
+      .badge-inactive {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+      .badge-pending {
+        background: #fef3c7;
+        color: #92400e;
+      }
+
+      /* Activity feed */
+      .activity-item {
+        padding: 16px;
+        border-left: 3px solid #e2e8f0;
+        margin-bottom: 16px;
+        background: white;
+        border-radius: 0 12px 12px 0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .activity-item.new {
+        border-left-color: var(--accent);
+        animation: pulse-border 2s infinite;
+      }
+
+      @keyframes pulse-border {
+        0% {
+          border-left-color: var(--accent);
+        }
+        50% {
+          border-left-color: #34d399;
+        }
+        100% {
+          border-left-color: var(--accent);
+        }
+      }
+
+      /* Quick actions */
+      .quick-action {
+        background: white;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: #475569;
+        display: block;
+      }
+
+      .quick-action:hover {
+        border-color: var(--accent);
+        background: #f0fdfa;
+        color: var(--accent);
+        transform: translateY(-2px);
+      }
+
+      .quick-action i {
+        font-size: 2rem;
+        margin-bottom: 8px;
+        display: block;
+      }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          width: 70px;
+        }
+
+        .main-content {
+          margin-left: 70px;
+        }
+
+        .sidebar .sidebar-text {
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+      <div class="p-3">
+        <div class="d-flex align-items-center text-white mb-4">
+          <i class="bi bi-shield-check fs-3 me-2"></i>
+          <span class="sidebar-text fw-bold">ADMIN</span>
+        </div>
+
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" href="#dashboard">
+              <i class="bi bi-speedometer2"></i>
+              <span class="sidebar-text">Bảng điều khiển</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#users">
+              <i class="bi bi-people"></i>
+              <span class="sidebar-text">Quản lý người dùng</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#courses">
+              <i class="bi bi-book"></i>
+              <span class="sidebar-text">Quản lý khóa học</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#teachers">
+              <i class="bi bi-person-workspace"></i>
+              <span class="sidebar-text">Quản lý giảng viên</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#analytics">
+              <i class="bi bi-graph-up"></i>
+              <span class="sidebar-text">Thống kê</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#settings">
+              <i class="bi bi-gear"></i>
+              <span class="sidebar-text">Cài đặt hệ thống</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#reports">
+              <i class="bi bi-file-earmark-text"></i>
+              <span class="sidebar-text">Báo cáo</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="position-absolute bottom-0 w-100 p-3">
+          <a class="nav-link text-danger" href="index.html">
+            <i class="bi bi-box-arrow-left"></i>
+            <span class="sidebar-text">Đăng xuất</span>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+      <!-- Top Navbar -->
+      <nav class="navbar navbar-expand-lg top-navbar px-4">
+        <button class="btn btn-outline-secondary me-3" id="sidebarToggle">
+          <i class="bi bi-list"></i>
+        </button>
+
+        <h4 class="mb-0 text-dark fw-bold">Bảng điều khiển</h4>
+
+        <div class="navbar-nav ms-auto">
+          <div class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle d-flex align-items-center"
+              href="#"
+              role="button"
+              data-bs-toggle="dropdown"
+            >
+              <img
+                src="https://i.pravatar.cc/100?img=1"
+                alt="Admin"
+                class="rounded-circle me-2"
+                style="width: 32px; height: 32px"
+              />
+              <span>Admin</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <a class="dropdown-item" href="#"
+                  ><i class="bi bi-person me-2"></i>Hồ sơ</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#"
+                  ><i class="bi bi-gear me-2"></i>Cài đặt</a
+                >
+              </li>
+              <li><hr class="dropdown-divider" /></li>
+              <li>
+                <a class="dropdown-item text-danger" href="index.html"
+                  ><i class="bi bi-box-arrow-left me-2"></i>Đăng xuất</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Dashboard Content -->
+      <div class="container-fluid p-4">
+        <!-- Statistics Cards -->
+        <div class="row mb-4">
+          <div class="col-xl-3 col-md-6 mb-4">
+            <div class="stat-card p-4">
+              <div class="d-flex justify-content-between">
+                <div>
+                  <div class="text-muted small text-uppercase">
+                    Tổng người dùng
+                  </div>
+                  <div class="stat-number text-primary">1,247</div>
+                  <div class="text-success small mt-1">
+                    <i class="bi bi-arrow-up"></i> 12.5% từ tháng trước
+                  </div>
+                </div>
+                <div class="text-primary">
+                  <i class="bi bi-people fs-1"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-md-6 mb-4">
+            <div class="stat-card warning p-4">
+              <div class="d-flex justify-content-between">
+                <div>
+                  <div class="text-muted small text-uppercase">
+                    Khóa học hoạt động
+                  </div>
+                  <div class="stat-number text-warning">89</div>
+                  <div class="text-success small mt-1">
+                    <i class="bi bi-arrow-up"></i> 8.2% từ tháng trước
+                  </div>
+                </div>
+                <div class="text-warning">
+                  <i class="bi bi-book fs-1"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-md-6 mb-4">
+            <div class="stat-card info p-4">
+              <div class="d-flex justify-content-between">
+                <div>
+                  <div class="text-muted small text-uppercase">Giảng viên</div>
+                  <div class="stat-number text-info">156</div>
+                  <div class="text-success small mt-1">
+                    <i class="bi bi-arrow-up"></i> 5.1% từ tháng trước
+                  </div>
+                </div>
+                <div class="text-info">
+                  <i class="bi bi-person-workspace fs-1"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-md-6 mb-4">
+            <div class="stat-card danger p-4">
+              <div class="d-flex justify-content-between">
+                <div>
+                  <div class="text-muted small text-uppercase">
+                    Doanh thu (VNĐ)
+                  </div>
+                  <div class="stat-number text-danger">₫2.4M</div>
+                  <div class="text-success small mt-1">
+                    <i class="bi bi-arrow-up"></i> 15.3% từ tháng trước
+                  </div>
+                </div>
+                <div class="text-danger">
+                  <i class="bi bi-currency-dollar fs-1"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="row mb-4">
+          <div class="col-xl-8 mb-4">
+            <div class="chart-card p-4">
+              <h5 class="mb-3">Người dùng mới theo tháng</h5>
+              <div style="position: relative; height: 300px">
+                <canvas id="userChart"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 mb-4">
+            <div class="chart-card p-4">
+              <h5 class="mb-3">Phân bố vai trò</h5>
+              <div
+                style="
+                  position: relative;
+                  height: 300px;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                "
+              >
+                <canvas id="roleChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions & Recent Activity -->
+        <div class="row">
+          <div class="col-xl-8 mb-4">
+            <div class="table-card">
+              <div class="p-4 border-bottom">
+                <h5 class="mb-0">Người dùng mới nhất</h5>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                  <thead>
+                    <tr>
+                      <th>Tên</th>
+                      <th>Email</th>
+                      <th>Vai trò</th>
+                      <th>Ngày tham gia</th>
+                      <th>Trạng thái</th>
+                      <th>Hành động</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <img
+                            src="https://i.pravatar.cc/100?img=2"
+                            class="rounded-circle me-3"
+                            width="40"
+                            height="40"
+                          />
+                          <div>
+                            <div class="fw-semibold">Nguyễn Văn A</div>
+                            <small class="text-muted">ID: 1001</small>
+                          </div>
+                        </div>
+                      </td>
+                      <td>nguyenvana@gmail.com</td>
+                      <td><span class="badge bg-primary">Học viên</span></td>
+                      <td>25/09/2025</td>
+                      <td>
+                        <span class="badge-status badge-active">Hoạt động</span>
+                      </td>
+                      <td>
+                        <button class="btn btn-sm btn-outline-primary me-1">
+                          <i class="bi bi-eye"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary">
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <img
+                            src="https://i.pravatar.cc/100?img=3"
+                            class="rounded-circle me-3"
+                            width="40"
+                            height="40"
+                          />
+                          <div>
+                            <div class="fw-semibold">Trần Thị B</div>
+                            <small class="text-muted">ID: 1002</small>
+                          </div>
+                        </div>
+                      </td>
+                      <td>tranthib@gmail.com</td>
+                      <td><span class="badge bg-success">Giảng viên</span></td>
+                      <td>24/09/2025</td>
+                      <td>
+                        <span class="badge-status badge-pending"
+                          >Chờ duyệt</span
+                        >
+                      </td>
+                      <td>
+                        <button class="btn btn-sm btn-outline-primary me-1">
+                          <i class="bi bi-eye"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-success">
+                          <i class="bi bi-check"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <img
+                            src="https://i.pravatar.cc/100?img=4"
+                            class="rounded-circle me-3"
+                            width="40"
+                            height="40"
+                          />
+                          <div>
+                            <div class="fw-semibold">Lê Văn C</div>
+                            <small class="text-muted">ID: 1003</small>
+                          </div>
+                        </div>
+                      </td>
+                      <td>levanc@gmail.com</td>
+                      <td><span class="badge bg-primary">Học viên</span></td>
+                      <td>23/09/2025</td>
+                      <td>
+                        <span class="badge-status badge-inactive"
+                          >Tạm khóa</span
+                        >
+                      </td>
+                      <td>
+                        <button class="btn btn-sm btn-outline-primary me-1">
+                          <i class="bi bi-eye"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-warning">
+                          <i class="bi bi-unlock"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-4">
+            <div class="mb-4">
+              <h5 class="mb-3">Thao tác nhanh</h5>
+              <div class="row g-3">
+                <div class="col-6">
+                  <a href="#" class="quick-action">
+                    <i class="bi bi-person-plus text-primary"></i>
+                    <div class="fw-semibold">Thêm người dùng</div>
+                  </a>
+                </div>
+                <div class="col-6">
+                  <a href="#" class="quick-action">
+                    <i class="bi bi-book-half text-success"></i>
+                    <div class="fw-semibold">Tạo khóa học</div>
+                  </a>
+                </div>
+                <div class="col-6">
+                  <a href="#" class="quick-action">
+                    <i class="bi bi-file-earmark-text text-warning"></i>
+                    <div class="fw-semibold">Xem báo cáo</div>
+                  </a>
+                </div>
+                <div class="col-6">
+                  <a href="#" class="quick-action">
+                    <i class="bi bi-gear text-secondary"></i>
+                    <div class="fw-semibold">Cài đặt</div>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h5 class="mb-3">Hoạt động gần đây</h5>
+              <div class="activity-item new">
+                <div class="d-flex align-items-center mb-2">
+                  <i class="bi bi-person-plus text-success me-2"></i>
+                  <strong>Người dùng mới</strong>
+                  <span class="text-muted ms-auto small">2 phút trước</span>
+                </div>
+                <p class="mb-0 small">
+                  Nguyễn Văn D đã đăng ký tài khoản học viên
+                </p>
+              </div>
+
+              <div class="activity-item">
+                <div class="d-flex align-items-center mb-2">
+                  <i class="bi bi-book text-primary me-2"></i>
+                  <strong>Khóa học mới</strong>
+                  <span class="text-muted ms-auto small">15 phút trước</span>
+                </div>
+                <p class="mb-0 small">
+                  GV. Phạm Thị E đã tạo khóa học "React Advanced"
+                </p>
+              </div>
+
+              <div class="activity-item">
+                <div class="d-flex align-items-center mb-2">
+                  <i class="bi bi-exclamation-triangle text-warning me-2"></i>
+                  <strong>Báo cáo vấn đề</strong>
+                  <span class="text-muted ms-auto small">1 giờ trước</span>
+                </div>
+                <p class="mb-0 small">
+                  Học viên báo cáo lỗi video trong bài học JavaScript cơ bản
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Sidebar toggle
+        const sidebarToggle = document.getElementById("sidebarToggle");
+        const sidebar = document.getElementById("sidebar");
+        const mainContent = document.getElementById("mainContent");
+
+        sidebarToggle.addEventListener("click", function () {
+          sidebar.classList.toggle("collapsed");
+          mainContent.classList.toggle("expanded");
+        });
+
+        // Check if Chart.js is loaded
+        if (typeof Chart === "undefined") {
+          console.error("Chart.js not loaded");
+          return;
+        }
+
+        // User Chart
+        const userChart = document.getElementById("userChart");
+        if (userChart) {
+          const userCtx = userChart.getContext("2d");
+          new Chart(userCtx, {
+            type: "line",
+            data: {
+              labels: [
+                "Jan",
+                "Feb",
+                "Mar",
+                "Apr",
+                "May",
+                "Jun",
+                "Jul",
+                "Aug",
+                "Sep",
+              ],
+              datasets: [
+                {
+                  label: "Người dùng mới",
+                  data: [30, 45, 60, 75, 90, 110, 130, 145, 160],
+                  borderColor: "#06d6a0",
+                  backgroundColor: "rgba(6, 214, 160, 0.1)",
+                  borderWidth: 3,
+                  fill: true,
+                  tension: 0.4,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  grid: {
+                    color: "#f1f5f9",
+                  },
+                  ticks: {
+                    color: "#6b7280",
+                  },
+                },
+                x: {
+                  grid: {
+                    color: "#f1f5f9",
+                  },
+                  ticks: {
+                    color: "#6b7280",
+                  },
+                },
+              },
+              plugins: {
+                legend: {
+                  display: false,
+                },
+                tooltip: {
+                  backgroundColor: "rgba(0, 0, 0, 0.8)",
+                  titleColor: "white",
+                  bodyColor: "white",
+                },
+              },
+              elements: {
+                point: {
+                  radius: 6,
+                  hoverRadius: 8,
+                },
+              },
+            },
+          });
+        }
+
+        // Role Chart
+        const roleChart = document.getElementById("roleChart");
+        if (roleChart) {
+          const roleCtx = roleChart.getContext("2d");
+          new Chart(roleCtx, {
+            type: "doughnut",
+            data: {
+              labels: ["Học viên", "Giảng viên", "Admin"],
+              datasets: [
+                {
+                  data: [856, 156, 4],
+                  backgroundColor: ["#3b82f6", "#10b981", "#f59e0b"],
+                  borderWidth: 2,
+                  borderColor: "#ffffff",
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  position: "bottom",
+                  labels: {
+                    padding: 20,
+                    color: "#6b7280",
+                    font: {
+                      size: 12,
+                    },
+                  },
+                },
+                tooltip: {
+                  backgroundColor: "rgba(0, 0, 0, 0.8)",
+                  titleColor: "white",
+                  bodyColor: "white",
+                },
+              },
+              cutout: "60%",
+            },
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

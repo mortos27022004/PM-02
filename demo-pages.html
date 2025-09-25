@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Danh sách các trang - CodeLearn</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        font-family: "Segoe UI", sans-serif;
+      }
+
+      .page-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        overflow: hidden;
+      }
+
+      .page-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+      }
+
+      .page-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: white;
+        margin-bottom: 1rem;
+      }
+
+      .role-admin {
+        background: linear-gradient(45deg, #dc2626, #ef4444);
+      }
+      .role-teacher {
+        background: linear-gradient(45deg, #1d4ed8, #3b82f6);
+      }
+      .role-learner {
+        background: linear-gradient(45deg, #059669, #10b981);
+      }
+      .role-auth {
+        background: linear-gradient(45deg, #7c3aed, #8b5cf6);
+      }
+      .role-landing {
+        background: linear-gradient(45deg, #0891b2, #06b6d4);
+      }
+
+      .demo-credentials {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 12px;
+        backdrop-filter: blur(10px);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container py-5">
+      <div class="text-center mb-5">
+        <h1 class="display-4 text-white fw-bold mb-3">
+          <i class="bi bi-code-square me-3"></i>CodeLearn
+        </h1>
+        <p class="lead text-white-50">Hệ thống quản lý học tập trực tuyến</p>
+      </div>
+
+      <!-- Demo Credentials -->
+      <div class="demo-credentials p-4 mb-5">
+        <h5 class="fw-bold mb-3">
+          <i class="bi bi-info-circle me-2"></i>Thông tin đăng nhập Demo
+        </h5>
+        <div class="row">
+          <div class="col-md-4">
+            <h6 class="text-danger">🛡️ Admin</h6>
+            <ul class="list-unstyled small">
+              <li><strong>Username:</strong> admin</li>
+              <li><strong>Email:</strong> admin@codelearn.com</li>
+              <li><strong>Password:</strong> admin123</li>
+            </ul>
+          </div>
+          <div class="col-md-4">
+            <h6 class="text-primary">👨‍🏫 Giảng viên</h6>
+            <ul class="list-unstyled small">
+              <li><strong>Username:</strong> teacher</li>
+              <li><strong>Email:</strong> teacher@codelearn.com</li>
+              <li><strong>Password:</strong> teacher123</li>
+            </ul>
+          </div>
+          <div class="col-md-4">
+            <h6 class="text-success">👨‍🎓 Học viên</h6>
+            <ul class="list-unstyled small">
+              <li><strong>Username:</strong> learner</li>
+              <li><strong>Email:</strong> mortos2722004@gmail.com</li>
+              <li><strong>Password:</strong> learner123 / 123456</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <!-- Landing Page -->
+        <div class="col-lg-4 col-md-6 mb-4">
+          <div class="page-card p-4 text-center h-100">
+            <div class="page-icon role-landing mx-auto">
+              <i class="bi bi-house-door"></i>
+            </div>
+            <h5 class="fw-bold">Trang chủ / Đăng nhập</h5>
+            <p class="text-muted mb-3">
+              Landing page với form đăng nhập, hỗ trợ phân quyền người dùng
+            </p>
+            <div class="mb-3">
+              <span class="badge bg-info">Landing</span>
+              <span class="badge bg-primary">Authentication</span>
+            </div>
+            <a href="index.html" class="btn btn-primary w-100">
+              <i class="bi bi-box-arrow-in-right me-2"></i>Xem trang
+            </a>
+          </div>
+        </div>
+
+        <!-- Register Page -->
+        <div class="col-lg-4 col-md-6 mb-4">
+          <div class="page-card p-4 text-center h-100">
+            <div class="page-icon role-auth mx-auto">
+              <i class="bi bi-person-plus"></i>
+            </div>
+            <h5 class="fw-bold">Đăng ký tài khoản</h5>
+            <p class="text-muted mb-3">
+              Form đăng ký với validation, chọn vai trò và kiểm tra độ mạnh mật
+              khẩu
+            </p>
+            <div class="mb-3">
+              <span class="badge bg-purple" style="background: #8b5cf6"
+                >Registration</span
+              >
+              <span class="badge bg-success">Role-based</span>
+            </div>
+            <a
+              href="register.html"
+              class="btn btn-purple w-100"
+              style="background: #8b5cf6; border-color: #8b5cf6"
+            >
+              <i class="bi bi-person-plus me-2"></i>Xem trang
+            </a>
+          </div>
+        </div>
+
+        <!-- Forgot Password -->
+        <div class="col-lg-4 col-md-6 mb-4">
+          <div class="page-card p-4 text-center h-100">
+            <div class="page-icon role-auth mx-auto">
+              <i class="bi bi-key"></i>
+            </div>
+            <h5 class="fw-bold">Quên mật khẩu</h5>
+            <p class="text-muted mb-3">
+              Quy trình 3 bước khôi phục mật khẩu với xác thực OTP
+            </p>
+            <div class="mb-3">
+              <span class="badge bg-warning">Recovery</span>
+              <span class="badge bg-secondary">Multi-step</span>
+            </div>
+            <a href="forgot-password.html" class="btn btn-warning w-100">
+              <i class="bi bi-key me-2"></i>Xem trang
+            </a>
+          </div>
+        </div>
+
+        <!-- Admin Dashboard -->
+        <div class="col-lg-4 col-md-6 mb-4">
+          <div class="page-card p-4 text-center h-100">
+            <div class="page-icon role-admin mx-auto">
+              <i class="bi bi-shield-check"></i>
+            </div>
+            <h5 class="fw-bold">Dashboard Admin</h5>
+            <p class="text-muted mb-3">
+              Bảng điều khiển quản trị với thống kê, biểu đồ và quản lý người
+              dùng
+            </p>
+            <div class="mb-3">
+              <span class="badge bg-danger">Admin</span>
+              <span class="badge bg-dark">Analytics</span>
+            </div>
+            <a href="admin_home.html" class="btn btn-danger w-100">
+              <i class="bi bi-shield-check me-2"></i>Xem trang
+            </a>
+          </div>
+        </div>
+
+        <!-- Teacher Dashboard -->
+        <div class="col-lg-4 col-md-6 mb-4">
+          <div class="page-card p-4 text-center h-100">
+            <div class="page-icon role-teacher mx-auto">
+              <i class="bi bi-person-workspace"></i>
+            </div>
+            <h5 class="fw-bold">Dashboard Giảng viên</h5>
+            <p class="text-muted mb-3">
+              Giao diện giảng viên với quản lý khóa học, học viên và thống kê
+            </p>
+            <div class="mb-3">
+              <span class="badge bg-primary">Teacher</span>
+              <span class="badge bg-info">Courses</span>
+            </div>
+            <a href="teacher_home.html" class="btn btn-primary w-100">
+              <i class="bi bi-person-workspace me-2"></i>Xem trang
+            </a>
+          </div>
+        </div>
+
+        <!-- Learner Dashboard -->
+        <div class="col-lg-4 col-md-6 mb-4">
+          <div class="page-card p-4 text-center h-100">
+            <div class="page-icon role-learner mx-auto">
+              <i class="bi bi-person-check"></i>
+            </div>
+            <h5 class="fw-bold">Dashboard Học viên</h5>
+            <p class="text-muted mb-3">
+              Trang chủ học viên với khóa học, tiến độ học tập và thống kê cá
+              nhân
+            </p>
+            <div class="mb-3">
+              <span class="badge bg-success">Learner</span>
+              <span class="badge bg-primary">Progress</span>
+            </div>
+            <a href="learner_home.html" class="btn btn-success w-100">
+              <i class="bi bi-person-check me-2"></i>Xem trang
+            </a>
+          </div>
+        </div>
+
+        <!-- Course Detail -->
+        <div class="col-lg-4 col-md-6 mb-4">
+          <div class="page-card p-4 text-center h-100">
+            <div
+              class="page-icon mx-auto"
+              style="background: linear-gradient(45deg, #f59e0b, #fbbf24)"
+            >
+              <i class="bi bi-book"></i>
+            </div>
+            <h5 class="fw-bold">Chi tiết khóa học</h5>
+            <p class="text-muted mb-3">
+              Trang chi tiết khóa học với thông tin, curriculum và đánh giá
+            </p>
+            <div class="mb-3">
+              <span class="badge bg-warning">Course</span>
+              <span class="badge bg-secondary">Detail</span>
+            </div>
+            <a href="course_detail.html" class="btn btn-warning w-100">
+              <i class="bi bi-book me-2"></i>Xem trang
+            </a>
+          </div>
+        </div>
+
+        <!-- Navigation Demo -->
+        <div class="col-12 mb-4">
+          <div class="page-card p-4">
+            <h5 class="fw-bold mb-3">
+              <i class="bi bi-diagram-3 me-2"></i>Luồng điều hướng
+            </h5>
+            <div class="row text-center">
+              <div class="col-md-2 mb-3">
+                <div class="border rounded p-3">
+                  <i class="bi bi-house-door text-info fs-4 mb-2"></i>
+                  <div class="small fw-semibold">Landing Page</div>
+                  <div class="small text-muted">index.html</div>
+                </div>
+              </div>
+              <div
+                class="col-md-1 d-flex align-items-center justify-content-center"
+              >
+                <i class="bi bi-arrow-right text-muted"></i>
+              </div>
+              <div class="col-md-2 mb-3">
+                <div class="border rounded p-3">
+                  <i
+                    class="bi bi-box-arrow-in-right text-primary fs-4 mb-2"
+                  ></i>
+                  <div class="small fw-semibold">Đăng nhập</div>
+                  <div class="small text-muted">Authentication</div>
+                </div>
+              </div>
+              <div
+                class="col-md-1 d-flex align-items-center justify-content-center"
+              >
+                <i class="bi bi-arrow-right text-muted"></i>
+              </div>
+              <div class="col-md-5 mb-3">
+                <div class="row">
+                  <div class="col-4">
+                    <div class="border border-danger rounded p-3">
+                      <i class="bi bi-shield-check text-danger fs-4 mb-2"></i>
+                      <div class="small fw-semibold">Admin</div>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="border border-primary rounded p-3">
+                      <i
+                        class="bi bi-person-workspace text-primary fs-4 mb-2"
+                      ></i>
+                      <div class="small fw-semibold">Teacher</div>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="border border-success rounded p-3">
+                      <i class="bi bi-person-check text-success fs-4 mb-2"></i>
+                      <div class="small fw-semibold">Learner</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <h6>
+                  <i class="bi bi-person-plus text-purple me-2"></i>Đăng ký mới
+                </h6>
+                <p class="small text-muted">
+                  Landing → Register → Dashboard (based on role)
+                </p>
+              </div>
+              <div class="col-md-6">
+                <h6>
+                  <i class="bi bi-key text-warning me-2"></i>Quên mật khẩu
+                </h6>
+                <p class="small text-muted">
+                  Landing → Forgot Password → Reset → Login
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="text-center mt-5 pb-4">
+        <p class="text-white-50">
+          © 2025 CodeLearn - Hệ thống học tập trực tuyến
+        </p>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
