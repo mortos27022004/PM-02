@@ -3,7 +3,7 @@
 Luôn tuân thủ các quy tắc sau khi sinh code trong repo này:
 
 1. **Ngôn ngữ phản hồi**: Luôn hiển thị bằng **tiếng Việt**.
-2. **Công nghệ**: Dùng **HTML + Bootstrap 5** để xây dựng giao diện.
+2. **Công nghệ**: Dùng **React + tailwind** để xây dựng giao diện.
 3. **Phong cách**: Thiết kế giống giao diện [CodeLearn.io](https://codelearn.io).
-4. **Liên kết**: Các trang phải được liên kết với nhau qua navbar/footer.
-5. **Code sạch**: Tách riêng CSS vào thư mục `/css` nếu cần, ưu tiên dùng class Bootstrap thay vì viết CSS thừa.
+4. **Code sạch**: Tách riêng component nếu có thể reuse.
+5. **Xử lý logic**: Fix cứng dữ liệu, không được dùng database, không được dùng backend, logic luồng state đơn giản vì chỉ cần demo giao diện.
