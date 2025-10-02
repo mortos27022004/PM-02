@@ -10,7 +10,20 @@ import TeacherDashboard from "./components/roles/TeacherDashboard";
 import StudentDashboard from "./components/roles/StudentDashboard";
 import LearningInterface from "./components/learning/LearningInterface";
 import CourseViewer from "./components/learning/CourseViewer";
+import LessonDetail from "./components/learning/LessonDetail";
 import Payment from "./components/Payment";
+import Register from "./components/Register";
+import ForgotPassword from "./components/ForgotPassword";
+import Notifications from "./components/Notifications";
+import HelpCenter from "./components/HelpCenter";
+import Profile from "./components/Profile";
+import CodingPractice from "./components/CodingPractice";
+import CourseEnrollment from "./components/CourseEnrollment";
+import ProgressTracking from "./components/ProgressTracking";
+import FeedbackSystem from "./components/FeedbackSystem";
+import MyCourses from "./components/MyCourses";
+import SearchCourses from "./components/SearchCourses";
+import CodeEditor from "./components/CodeEditor";
 
 // Protected Route Component
 const ProtectedRoute = ({ children, allowedRoles = [] }) => {
@@ -113,7 +126,110 @@ function App() {
           path="/learning/:courseId/:lessonId"
           element={
             <ProtectedRoute>
+              <LessonDetail />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/learning-interface/:courseId/:lessonId"
+          element={
+            <ProtectedRoute>
               <LearningInterface />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Additional features */}
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+
+        <Route
+          path="/notifications"
+          element={
+            <ProtectedRoute>
+              <Notifications />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/help"
+          element={
+            <ProtectedRoute>
+              <HelpCenter />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/practice"
+          element={
+            <ProtectedRoute>
+              <CodingPractice />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/enroll/:courseId"
+          element={
+            <ProtectedRoute>
+              <CourseEnrollment />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/progress"
+          element={
+            <ProtectedRoute>
+              <ProgressTracking />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/feedback"
+          element={
+            <ProtectedRoute>
+              <FeedbackSystem />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/my-courses"
+          element={
+            <ProtectedRoute allowedRoles={["student"]}>
+              <MyCourses />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/search"
+          element={
+            <ProtectedRoute>
+              <SearchCourses />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/code-editor"
+          element={
+            <ProtectedRoute>
+              <CodeEditor />
             </ProtectedRoute>
           }
         />

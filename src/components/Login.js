@@ -86,6 +86,93 @@ const Login = () => {
           {isLoading ? "Đang đăng nhập..." : "Đăng nhập"}
         </button>
 
+        {/* OAuth Login */}
+        <div style={{ margin: "1.5rem 0" }}>
+          <div style={{ textAlign: "center", margin: "1rem 0", color: "#666" }}>
+            Hoặc đăng nhập với
+          </div>
+          <div style={{ display: "flex", gap: "1rem" }}>
+            <button
+              type="button"
+              onClick={() =>
+                alert("Chức năng đăng nhập với Google đang phát triển")
+              }
+              style={{
+                flex: 1,
+                padding: "0.8rem",
+                border: "2px solid #db4437",
+                borderRadius: "5px",
+                background: "white",
+                color: "#db4437",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "0.5rem",
+              }}
+            >
+              🔴 Google
+            </button>
+            <button
+              type="button"
+              onClick={() =>
+                alert("Chức năng đăng nhập với Facebook đang phát triển")
+              }
+              style={{
+                flex: 1,
+                padding: "0.8rem",
+                border: "2px solid #4267B2",
+                borderRadius: "5px",
+                background: "white",
+                color: "#4267B2",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "0.5rem",
+              }}
+            >
+              🔵 Facebook
+            </button>
+          </div>
+        </div>
+
+        {/* Register and Forgot Password Links */}
+        <div
+          style={{
+            marginTop: "1rem",
+            textAlign: "center",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <a
+            href="/register"
+            style={{
+              color: "#667eea",
+              textDecoration: "none",
+              fontSize: "0.9rem",
+            }}
+            onMouseOver={(e) => (e.target.style.textDecoration = "underline")}
+            onMouseOut={(e) => (e.target.style.textDecoration = "none")}
+          >
+            📝 Đăng ký tài khoản
+          </a>
+          <a
+            href="/forgot-password"
+            style={{
+              color: "#667eea",
+              textDecoration: "none",
+              fontSize: "0.9rem",
+            }}
+            onMouseOver={(e) => (e.target.style.textDecoration = "underline")}
+            onMouseOut={(e) => (e.target.style.textDecoration = "none")}
+          >
+            🔑 Quên mật khẩu?
+          </a>
+        </div>
+
         {/* Demo accounts info */}
         <div
           style={{

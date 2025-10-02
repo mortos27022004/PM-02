@@ -39,6 +39,27 @@ const Header = () => {
                 <li>
                   <Link to="/courses">Khóa học</Link>
                 </li>
+                <li>
+                  <Link to="/search">Tìm kiếm</Link>
+                </li>
+                <li>
+                  <Link to="/practice">Luyện tập</Link>
+                </li>
+                <li>
+                  <Link to="/progress">Tiến độ</Link>
+                </li>
+                <li>
+                  <Link to="/feedback">Phản hồi</Link>
+                </li>
+                <li>
+                  <Link to="/notifications">Thông báo</Link>
+                </li>
+                <li>
+                  <Link to="/profile">Tài khoản</Link>
+                </li>
+                <li>
+                  <Link to="/help">Trợ giúp</Link>
+                </li>
                 {role === "admin" && (
                   <li>
                     <Link to="/admin">Quản lý</Link>

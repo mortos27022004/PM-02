@@ -7,9 +7,7 @@ const initialState = {
   registeredCourses: [], // Khóa học đã đăng ký (bao gồm cả chưa thanh toán)
   teachingCourses: [], // For teachers
   pendingCourses: [], // Courses waiting for approval
-  searchResults: [],
   filteredCourses: EXTENDED_COURSES, // For displaying filtered courses
-  searchTerm: "",
   selectedCourse: null,
   filters: {
     category: "all",
@@ -172,47 +170,8 @@ const courseSlice = createSlice({
         course.updatedAt = new Date().toISOString();
       }
     },
-    searchCourses: (state, action) => {
-      const searchTerm = action.payload || "";
-      state.searchTerm = searchTerm;
-
-      let results = state.courses.filter(
-        (course) =>
-          course.status === "published" || course.status === "approved"
-      );
-
-      // Search by keyword
-      if (searchTerm) {
-        results = results.filter(
-          (course) =>
-            course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            course.description
-              .toLowerCase()
-              .includes(searchTerm.toLowerCase()) ||
-            course.instructor
-              .toLowerCase()
-              .includes(searchTerm.toLowerCase()) ||
-            (course.tags &&
-              course.tags.some((tag) =>
-                tag.toLowerCase().includes(searchTerm.toLowerCase())
-              ))
-        );
-      }
-
-      state.filteredCourses = results;
-      state.searchResults = results;
-    },
     setSelectedCourse: (state, action) => {
       state.selectedCourse = action.payload;
-    },
-    clearSearch: (state) => {
-      state.searchResults = [];
-      state.filters = {
-        category: "all",
-        level: "all",
-        price: "all",
-        rating: 0,
-      };
     },
   },
 });
@@ -227,8 +186,6 @@ export const {
   updateCourse,
   approveCourse,
   rejectCourse,
-  searchCourses,
   setSelectedCourse,
-  clearSearch,
 } = courseSlice.actions;
 export default courseSlice.reducer;

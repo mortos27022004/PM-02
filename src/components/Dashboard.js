@@ -1,290 +1,223 @@
-import React from "react";
+﻿import React from "react";
 import { useSelector } from "react-redux";
 
 const Dashboard = () => {
   const { role, userInfo } = useSelector((state) => state.auth);
-  const { courses } = useSelector((state) => state.courses);
 
-  const getStats = () => {
-    const totalCourses = courses.length;
-    const totalStudents = courses.reduce(
-      (sum, course) => sum + course.students,
-      0
-    );
-    const totalInstructors = [
-      ...new Set(courses.map((course) => course.instructor)),
-    ].length;
+  return (
+    <div className="main-container">
+      <div
+        style={{
+          background: "white",
+          padding: "1.5rem",
+          borderRadius: "10px",
+          marginBottom: "2rem",
+          boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
+          display: "flex",
+          alignItems: "center",
+          gap: "1rem",
+        }}
+      >
+        <div style={{ fontSize: "3rem" }}>{userInfo?.avatar}</div>
+        <div>
+          <h2 style={{ margin: "0 0 0.5rem 0" }}>
+            Chào mừng trở lại, {userInfo?.fullName}! 👋
+          </h2>
+          <p style={{ margin: 0, color: "#666" }}>
+            {userInfo?.email} • Dashboard{" "}
+            {role === "admin"
+              ? "Quản trị viên"
+              : role === "teacher"
+              ? "Giảng viên"
+              : "Học viên"}
+          </p>
+        </div>
+      </div>
 
-    return { totalCourses, totalStudents, totalInstructors };
-  };
-
-  const { totalCourses, totalStudents, totalInstructors } = getStats();
-
-  const getDashboardContent = () => {
-    switch (role) {
-      case "admin":
-        return (
-          <div>
-            <div
-              style={{
-                background: "white",
-                padding: "1.5rem",
-                borderRadius: "10px",
-                marginBottom: "2rem",
-                boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
-                display: "flex",
-                alignItems: "center",
-                gap: "1rem",
-              }}
-            >
-              <div style={{ fontSize: "3rem" }}>{userInfo?.avatar}</div>
-              <div>
-                <h2 style={{ margin: "0 0 0.5rem 0" }}>
-                  Chào mừng trở lại, {userInfo?.fullName}! 👋
-                </h2>
-                <p style={{ margin: 0, color: "#666" }}>
-                  {userInfo?.email} • Dashboard Quản trị viên
-                </p>
-              </div>
-            </div>
-
-            <div className="stats-grid">
-              <div className="stat-card">
-                <div className="stat-number">{totalCourses}</div>
-                <div className="stat-label">Tổng khóa học</div>
-              </div>
-              <div className="stat-card">
-                <div className="stat-number">{totalStudents}</div>
-                <div className="stat-label">Tổng học viên</div>
-              </div>
-              <div className="stat-card">
-                <div className="stat-number">{totalInstructors}</div>
-                <div className="stat-label">Giảng viên</div>
-              </div>
-              <div className="stat-card">
-                <div className="stat-number">24</div>
-                <div className="stat-label">Hoạt động hôm nay</div>
-              </div>
-            </div>
-
-            <div className="dashboard">
-              <div className="card">
-                <h3>🎯 Quản lý hệ thống</h3>
-                <p>
-                  Theo dõi và quản lý toàn bộ hệ thống học tập trực tuyến. Xem
-                  báo cáo, thống kê và điều hành các hoạt động.
-                </p>
-              </div>
-              <div className="card">
-                <h3>👥 Quản lý người dùng</h3>
-                <p>
-                  Quản lý tài khoản giảng viên và học viên. Phân quyền, theo dõi
-                  hoạt động và hỗ trợ người dùng.
-                </p>
-              </div>
-              <div className="card">
-                <h3>📊 Báo cáo & Thống kê</h3>
-                <p>
-                  Xem các báo cáo chi tiết về tiến độ học tập, hiệu quả khóa học
-                  và phản hồi từ người học.
-                </p>
-              </div>
-            </div>
+      {/* Quick Search Bar (cho tất cả roles) */}
+      <div
+        style={{
+          background: "white",
+          padding: "1.5rem",
+          borderRadius: "10px",
+          marginBottom: "2rem",
+          boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
+        }}
+      >
+        <div style={{ position: "relative" }}>
+          <input
+            type="text"
+            placeholder="🔍 Tìm kiếm khóa học, giảng viên, chủ đề..."
+            onClick={() => (window.location.href = "/search")}
+            style={{
+              width: "100%",
+              padding: "1rem 3rem 1rem 1rem",
+              border: "2px solid #e1e5e9",
+              borderRadius: "8px",
+              fontSize: "1rem",
+              cursor: "pointer",
+              background: "#f8f9fa",
+            }}
+            readOnly
+          />
+          <div
+            style={{
+              position: "absolute",
+              right: "1rem",
+              top: "50%",
+              transform: "translateY(-50%)",
+              fontSize: "1.2rem",
+              color: "#667eea",
+              cursor: "pointer",
+            }}
+            onClick={() => (window.location.href = "/search")}
+          >
+            🔍
           </div>
-        );
+        </div>
+      </div>
 
-      case "teacher":
-        return (
-          <div>
+      <div className="dashboard">
+        {role === "admin" && (
+          <>
             <div
-              style={{
-                background: "white",
-                padding: "1.5rem",
-                borderRadius: "10px",
-                marginBottom: "2rem",
-                boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
-                display: "flex",
-                alignItems: "center",
-                gap: "1rem",
-              }}
+              className="card"
+              onClick={() => (window.location.href = "/admin/users")}
+              style={{ cursor: "pointer" }}
             >
-              <div style={{ fontSize: "3rem" }}>{userInfo?.avatar}</div>
-              <div>
-                <h2 style={{ margin: "0 0 0.5rem 0" }}>
-                  Xin chào {userInfo?.fullName}! 📚
-                </h2>
-                <p style={{ margin: "0 0 0.3rem 0", color: "#666" }}>
-                  {userInfo?.email} • Dashboard Giảng viên
-                </p>
-                {userInfo?.subjects && (
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: "0.5rem",
-                      marginTop: "0.5rem",
-                    }}
-                  >
-                    {userInfo.subjects.map((subject) => (
-                      <span
-                        key={subject}
-                        style={{
-                          background: "#667eea",
-                          color: "white",
-                          padding: "0.2rem 0.6rem",
-                          borderRadius: "12px",
-                          fontSize: "0.8rem",
-                        }}
-                      >
-                        {subject}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
+              <h3>👥 Quản lý người dùng</h3>
+              <p>
+                Tạo tài khoản người hỗ trợ, kiểm duyệt viên. Thêm, sửa, xóa,
+                khóa tài khoản.
+              </p>
             </div>
-
-            <div className="stats-grid">
-              <div className="stat-card">
-                <div className="stat-number">3</div>
-                <div className="stat-label">Khóa học đang dạy</div>
-              </div>
-              <div className="stat-card">
-                <div className="stat-number">156</div>
-                <div className="stat-label">Học viên</div>
-              </div>
-              <div className="stat-card">
-                <div className="stat-number">8</div>
-                <div className="stat-label">Bài tập chờ chấm</div>
-              </div>
-              <div className="stat-card">
-                <div className="stat-number">4.8</div>
-                <div className="stat-label">Đánh giá trung bình</div>
-              </div>
-            </div>
-
-            <div className="dashboard">
-              <div className="card">
-                <h3>📚 Quản lý khóa học</h3>
-                <p>
-                  Tạo và quản lý nội dung khóa học của bạn. Thêm bài học, bài
-                  tập và theo dõi tiến độ học viên.
-                </p>
-              </div>
-              <div className="card">
-                <h3>👨‍🎓 Học viên của tôi</h3>
-                <p>
-                  Theo dõi tiến độ học tập của học viên, chấm bài và đưa ra phản
-                  hồi để hỗ trợ quá trình học.
-                </p>
-              </div>
-              <div className="card">
-                <h3>📝 Bài tập & Kiểm tra</h3>
-                <p>
-                  Tạo và quản lý bài tập, đề kiểm tra. Xem kết quả và thống kê
-                  hiệu suất học tập.
-                </p>
-              </div>
-            </div>
-          </div>
-        );
-
-      case "student":
-        return (
-          <div>
             <div
-              style={{
-                background: "white",
-                padding: "1.5rem",
-                borderRadius: "10px",
-                marginBottom: "2rem",
-                boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
-                display: "flex",
-                alignItems: "center",
-                gap: "1rem",
-              }}
+              className="card"
+              onClick={() => (window.location.href = "/admin/permissions")}
+              style={{ cursor: "pointer" }}
             >
-              <div style={{ fontSize: "3rem" }}>{userInfo?.avatar}</div>
-              <div>
-                <h2 style={{ margin: "0 0 0.5rem 0" }}>
-                  Chúc bạn học tập vui vẻ, {userInfo?.fullName}! 🎓
-                </h2>
-                <p style={{ margin: "0 0 0.3rem 0", color: "#666" }}>
-                  {userInfo?.email} • Dashboard Học viên
-                </p>
-                {userInfo?.level && (
-                  <div
-                    style={{
-                      background:
-                        userInfo.level === "Beginner"
-                          ? "#4CAF50"
-                          : userInfo.level === "Intermediate"
-                          ? "#FF9800"
-                          : "#F44336",
-                      color: "white",
-                      padding: "0.3rem 0.8rem",
-                      borderRadius: "15px",
-                      fontSize: "0.8rem",
-                      display: "inline-block",
-                      marginTop: "0.5rem",
-                    }}
-                  >
-                    Level: {userInfo.level}
-                  </div>
-                )}
-              </div>
+              <h3>� Quản lý quyền</h3>
+              <p>Thêm, sửa, xóa quyền cho các tài khoản hệ thống.</p>
             </div>
-
-            <div className="stats-grid">
-              <div className="stat-card">
-                <div className="stat-number">5</div>
-                <div className="stat-label">Khóa học đã đăng ký</div>
-              </div>
-              <div className="stat-card">
-                <div className="stat-number">78%</div>
-                <div className="stat-label">Tiến độ hoàn thành</div>
-              </div>
-              <div className="stat-card">
-                <div className="stat-number">12</div>
-                <div className="stat-label">Bài tập đã hoàn thành</div>
-              </div>
-              <div className="stat-card">
-                <div className="stat-number">245</div>
-                <div className="stat-label">Điểm tích lũy</div>
-              </div>
+            <div
+              className="card"
+              onClick={() => (window.location.href = "/admin/courses")}
+              style={{ cursor: "pointer" }}
+            >
+              <h3>✅ Duyệt khóa học</h3>
+              <p>Kiểm duyệt và phê duyệt các khóa học mới từ giảng viên.</p>
             </div>
-
-            <div className="dashboard">
-              <div className="card">
-                <h3>📖 Khóa học của tôi</h3>
-                <p>
-                  Tiếp tục học các khóa học đã đăng ký. Theo dõi tiến độ và hoàn
-                  thành các bài học.
-                </p>
-              </div>
-              <div className="card">
-                <h3>🎯 Mục tiêu học tập</h3>
-                <p>
-                  Đặt và theo dõi các mục tiêu học tập cá nhân. Xem thống kê
-                  tiến độ và thành tích đạt được.
-                </p>
-              </div>
-              <div className="card">
-                <h3>🏆 Thành tích</h3>
-                <p>
-                  Xem các chứng chỉ đã đạt được, điểm số và thứ hạng trong các
-                  khóa học đã tham gia.
-                </p>
-              </div>
+            <div
+              className="card"
+              onClick={() => (window.location.href = "/admin/analytics")}
+              style={{ cursor: "pointer" }}
+            >
+              <h3>📊 Thống kê & Báo cáo</h3>
+              <p>Xem báo cáo doanh thu, lịch sử hành động người dùng.</p>
             </div>
-          </div>
-        );
+            <div
+              className="card"
+              onClick={() => (window.location.href = "/admin/payments")}
+              style={{ cursor: "pointer" }}
+            >
+              <h3>💳 Quản lý giao dịch</h3>
+              <p>Theo dõi tất cả giao dịch thanh toán, biên lai điện tử.</p>
+            </div>
+            <div
+              className="card"
+              onClick={() => (window.location.href = "/admin/comments")}
+              style={{ cursor: "pointer" }}
+            >
+              <h3>💬 Kiểm duyệt bình luận</h3>
+              <p>Ẩn, gỡ hoặc khóa thread bình luận vi phạm.</p>
+            </div>
+          </>
+        )}
 
-      default:
-        return <div>Dashboard không xác định</div>;
-    }
-  };
+        {role === "teacher" && (
+          <>
+            <div
+              className="card"
+              onClick={() => (window.location.href = "/teacher/courses")}
+              style={{ cursor: "pointer" }}
+            >
+              <h3>📚 Quản lý khóa học</h3>
+              <p>Tạo, chỉnh sửa khóa học và nội dung bài học.</p>
+            </div>
+            <div
+              className="card"
+              onClick={() => (window.location.href = "/teacher/assignments")}
+              style={{ cursor: "pointer" }}
+            >
+              <h3>❓ Tạo bài tập & Quiz</h3>
+              <p>Tạo các bài kiểm tra, quiz và bài tập coding cho học viên.</p>
+            </div>
+            <div
+              className="card"
+              onClick={() => (window.location.href = "/teacher/students")}
+              style={{ cursor: "pointer" }}
+            >
+              <h3>👨‍🎓 Theo dõi học viên</h3>
+              <p>Xem tiến độ học tập của tất cả học viên trong khóa học.</p>
+            </div>
+            <div
+              className="card"
+              onClick={() => (window.location.href = "/teacher/comments")}
+              style={{ cursor: "pointer" }}
+            >
+              <h3>💬 Quản lý thảo luận</h3>
+              <p>Trả lời câu hỏi và quản lý bình luận trong bài học.</p>
+            </div>
+          </>
+        )}
 
-  return <div className="main-container">{getDashboardContent()}</div>;
+        {role === "student" && (
+          <>
+            <div
+              className="card"
+              onClick={() => (window.location.href = "/courses")}
+              style={{ cursor: "pointer" }}
+            >
+              <h3>📚 Danh sách khóa học</h3>
+              <p>Xem tất cả khóa học và đăng ký khóa học mới.</p>
+            </div>
+            <div
+              className="card"
+              onClick={() => (window.location.href = "/my-courses")}
+              style={{ cursor: "pointer" }}
+            >
+              <h3>🎓 Khóa học của tôi</h3>
+              <p>Khóa học đã đăng ký và tiếp tục học tập.</p>
+            </div>
+            <div
+              className="card"
+              onClick={() => (window.location.href = "/practice")}
+              style={{ cursor: "pointer" }}
+            >
+              <h3>💻 Luyện tập coding</h3>
+              <p>Thực hành lập trình với các bài tập đa ngôn ngữ.</p>
+            </div>
+            <div
+              className="card"
+              onClick={() => (window.location.href = "/progress")}
+              style={{ cursor: "pointer" }}
+            >
+              <h3>📊 Tiến độ học tập</h3>
+              <p>Theo dõi tiến độ học tập của bạn trong từng khóa học.</p>
+            </div>
+            <div
+              className="card"
+              onClick={() => (window.location.href = "/feedback")}
+              style={{ cursor: "pointer" }}
+            >
+              <h3>💭 Đánh giá khóa học</h3>
+              <p>Chia sẻ feedback về khóa học và giảng viên.</p>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default Dashboard;
