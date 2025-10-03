@@ -1,5 +1,12 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
+import StudentList from "./components/StudentList";
+import StudentProgress from "./components/StudentProgress";
+import AnalyticsDashboard from "./components/AnalyticsDashboard";
+import CourseFeedback from "./components/CourseFeedback";
+import RevenueStatistics from "./components/RevenueStatistics";
+import EmailTemplateManager from "./components/EmailTemplateManager";
+import AdminManagement from "./components/AdminManagement";
 import { useSelector } from "react-redux";
 import Header from "./components/Header";
 import Login from "./components/Login";
@@ -24,6 +31,11 @@ import FeedbackSystem from "./components/FeedbackSystem";
 import MyCourses from "./components/MyCourses";
 import SearchCourses from "./components/SearchCourses";
 import CodeEditor from "./components/CodeEditor";
+import NotificationCenter from "./components/NotificationCenter";
+import AccountInfo from "./components/AccountInfo";
+import AccountSettings from "./components/AccountSettings";
+import SupportCenter from "./components/SupportCenter";
+import CodePracticeManagement from "./components/CodePracticeManagement";
 
 // Protected Route Component
 const ProtectedRoute = ({ children, allowedRoles = [] }) => {
@@ -230,6 +242,114 @@ function App() {
           element={
             <ProtectedRoute>
               <CodeEditor />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/notification-center"
+          element={
+            <ProtectedRoute>
+              <NotificationCenter />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/account-info"
+          element={
+            <ProtectedRoute>
+              <AccountInfo />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/account-settings"
+          element={
+            <ProtectedRoute>
+              <AccountSettings />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/support"
+          element={
+            <ProtectedRoute>
+              <SupportCenter />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/student-list"
+          element={
+            <ProtectedRoute allowedRoles={["teacher", "admin"]}>
+              <StudentList />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/student-progress/:studentId"
+          element={
+            <ProtectedRoute allowedRoles={["teacher", "admin"]}>
+              <StudentProgress />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/analytics"
+          element={
+            <ProtectedRoute allowedRoles={["teacher", "admin"]}>
+              <AnalyticsDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/course-feedback/:courseId"
+          element={
+            <ProtectedRoute>
+              <CourseFeedback />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/code-practice-management"
+          element={
+            <ProtectedRoute allowedRoles={["teacher", "admin"]}>
+              <CodePracticeManagement />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/revenue-statistics"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <RevenueStatistics />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/email-templates"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "teacher"]}>
+              <EmailTemplateManager />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin-management"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <AdminManagement />
             </ProtectedRoute>
           }
         />
