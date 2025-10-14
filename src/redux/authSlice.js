@@ -1,13 +1,48 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { authenticateUser } from "../data/accounts";
 
-const initialState = {
-  user: null,
-  isAuthenticated: false,
-  role: null, // 'admin', 'teacher', 'student'
-  userInfo: null, // Thông tin chi tiết người dùng
-  loginError: null,
+// Load auth state from localStorage
+const loadAuthState = () => {
+  try {
+    const serializedState = localStorage.getItem("authState");
+    if (serializedState === null) {
+      return {
+        user: null,
+        isAuthenticated: false,
+        role: null,
+        userInfo: null,
+        loginError: null,
+      };
+    }
+    return JSON.parse(serializedState);
+  } catch (err) {
+    return {
+      user: null,
+      isAuthenticated: false,
+      role: null,
+      userInfo: null,
+      loginError: null,
+    };
+  }
 };
+
+// Save auth state to localStorage
+const saveAuthState = (state) => {
+  try {
+    const serializedState = JSON.stringify({
+      user: state.user,
+      isAuthenticated: state.isAuthenticated,
+      role: state.role,
+      userInfo: state.userInfo,
+      loginError: null, // Don't persist errors
+    });
+    localStorage.setItem("authState", serializedState);
+  } catch (err) {
+    // Ignore write errors
+  }
+};
+
+const initialState = loadAuthState();
 
 const authSlice = createSlice({
   name: "auth",
@@ -23,6 +58,7 @@ const authSlice = createSlice({
       state.userInfo = user;
       state.isAuthenticated = true;
       state.loginError = null;
+      saveAuthState(state);
     },
     loginFailure: (state, action) => {
       state.loginError = action.payload;
@@ -34,12 +70,14 @@ const authSlice = createSlice({
       state.userInfo = null;
       state.isAuthenticated = false;
       state.loginError = null;
+      localStorage.removeItem("authState");
     },
     updateProfileStart: (state) => {
       state.loginError = null;
     },
     updateProfileSuccess: (state, action) => {
       state.userInfo = { ...state.userInfo, ...action.payload };
+      saveAuthState(state);
     },
     updateProfileFailure: (state, action) => {
       state.loginError = action.payload;
@@ -54,6 +92,7 @@ const authSlice = createSlice({
       state.userInfo = user;
       state.isAuthenticated = true;
       state.loginError = null;
+      saveAuthState(state);
     },
     registerFailure: (state, action) => {
       state.loginError = action.payload;

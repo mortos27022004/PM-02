@@ -7,6 +7,8 @@ import CourseFeedback from "./components/CourseFeedback";
 import RevenueStatistics from "./components/RevenueStatistics";
 import EmailTemplateManager from "./components/EmailTemplateManager";
 import AdminManagement from "./components/AdminManagement";
+import UserManagement from "./components/admin/UserManagement";
+import CourseApproval from "./components/admin/CourseApproval";
 import { useSelector } from "react-redux";
 import Header from "./components/Header";
 import Login from "./components/Login";
@@ -350,6 +352,96 @@ function App() {
           element={
             <ProtectedRoute allowedRoles={["admin"]}>
               <AdminManagement />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/users"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <UserManagement />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/permissions"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <AdminPanel />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/courses"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <CourseApproval />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/analytics"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <AnalyticsDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/payments"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <RevenueStatistics />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/comments"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <SupportCenter />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/teacher/courses"
+          element={
+            <ProtectedRoute allowedRoles={["teacher"]}>
+              <TeacherDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/teacher/assignments"
+          element={
+            <ProtectedRoute allowedRoles={["teacher"]}>
+              <CodePracticeManagement />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/teacher/students"
+          element={
+            <ProtectedRoute allowedRoles={["teacher"]}>
+              <StudentList />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/teacher/comments"
+          element={
+            <ProtectedRoute allowedRoles={["teacher"]}>
+              <SupportCenter />
             </ProtectedRoute>
           }
         />

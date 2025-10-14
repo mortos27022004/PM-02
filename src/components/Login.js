@@ -88,7 +88,7 @@ const Login = () => {
 
         {/* OAuth Login */}
         <div style={{ margin: "1.5rem 0" }}>
-          <div style={{ textAlign: "center", margin: "1rem 0", color: "#666" }}>
+          <div style={{ textAlign: "center", margin: "1rem 0", color: "#555" }}>
             Hoặc đăng nhập với
           </div>
           <div style={{ display: "flex", gap: "1rem" }}>
@@ -178,7 +178,7 @@ const Login = () => {
           style={{
             marginTop: "1.5rem",
             fontSize: "0.85rem",
-            color: "#666",
+            color: "#333",
             textAlign: "left",
             background: "#f8f9fa",
             padding: "1rem",
